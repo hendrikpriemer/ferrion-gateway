@@ -25,7 +25,7 @@
     "aedes": "^1.2.0",
     "material-symbols": "0.48.0",
     "modbus-serial": "^8.0.25",
-    "mqtt": "^5.16.0",
+    "mqtt": "^5.16.1",
     "node-opcua": "^2.187.9",
     "pino": "^10.4.0",
     "tsx": "^4.20.6",
