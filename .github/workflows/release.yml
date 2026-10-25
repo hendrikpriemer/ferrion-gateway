@@ -73,7 +73,7 @@ jobs:
       # by cosign below instead, from the same package-lock.json.
       - name: Build and push
         id: build
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: Dockerfile
