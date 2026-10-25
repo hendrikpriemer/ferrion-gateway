@@ -29,7 +29,7 @@
     "node-opcua": "^2.187.9",
     "pino": "^10.4.0",
     "tsx": "^4.20.6",
-    "undici": "^8.11.2",
+    "undici": "^8.12.3",
     "zod": "^4.6.5"
   },
   "devDependencies": {
