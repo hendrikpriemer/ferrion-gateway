@@ -1590,7 +1590,7 @@ PERFORMANCE OF THIS SOFTWARE.
 
 ------------------------------------------------------------------------
 
-ip-address@10.7.3 (MIT)
+ip-address@10.7.5 (MIT)
 
 Copyright (C) 2011 by Beau Gunderson
 
@@ -3250,7 +3250,7 @@ SOFTWARE.
 
 ------------------------------------------------------------------------
 
-undici@8.11.2 (MIT)
+undici@8.12.3 (MIT)
 undici-types@6.21.0 (MIT)
 
 MIT License
@@ -3460,7 +3460,7 @@ SOFTWARE.
 
 ------------------------------------------------------------------------
 
-zod@4.6.5 (MIT)
+zod@4.6.7 (MIT)
 
 MIT License
 
