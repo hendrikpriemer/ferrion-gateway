@@ -1,0 +1,92 @@
+services:
+  ferrion-gateway:
+    build: .
+    # tini as PID 1: the control-plane forks one Node process per instance
+    # and each of those keeps an esbuild service process (tsx) - if an
+    # instance is OOM-killed, its esbuild child is re-parented to PID 1 and
+    # stays a zombie unless something there reaps it. Pairs with the
+    # Dockerfile's direct `node` CMD (no npm in the tree any more).
+    init: true
+    # The control-plane stops its instances with escalation (disconnect,
+    # SIGTERM after 5 s, SIGKILL after 8 s, hard cap 10 s) and only then
+    # exits; Docker's default grace of 10 s would cut that short.
+    stop_grace_period: 20s
+    ports:
+      # Bound to 127.0.0.1 on the host side (not 0.0.0.0) - the app itself
+      # binds 0.0.0.0 *inside* the container (FG_BIND_HOST below), since a
+      # container's own 127.0.0.1 is unreachable from outside it no matter
+      # how a port is published. With the app-level bind now permissive,
+      # this host-side restriction is what actually preserves the
+      # original "local machine only, no auth" trust boundary - drop it
+      # (or bind a specific LAN IP) if you deliberately want this reachable
+      # from other devices, e.g. ferrion itself running elsewhere.
+      - "127.0.0.1:${FG_CONTROL_PLANE_PORT:-4000}:${FG_CONTROL_PLANE_PORT:-4000}"
+      # A small range per protocol, not a single port: each new simulated
+      # instance of the same protocol takes the next port up (see
+      # fleet/port-allocator.ts). 10 slots each is enough for local
+      # testing at the scale the plan recommends (a handful of mixed-
+      # protocol instances, not a dozen of the same protocol at once) -
+      # widen these if you actually need more concurrent instances of one
+      # protocol.
+      # LOCAL MACHINE OVERRIDE (uncommitted): host port 4840 is already
+      # taken here by a pre-existing OPC UA Local Discovery Server, so the
+      # host side is shifted by +10000. Container-internal ports and the
+      # app's own port-allocator are unaffected - when copying an
+      # instance's connection info into ferrion, add 10000 to the OPC UA
+      # port shown (e.g. displayed 4840 -> actually reachable at 14840).
+      - "127.0.0.1:14840-14850:4840-4850" # OPC UA
+      - "127.0.0.1:5502-5512:5502-5512" # Modbus TCP
+      - "127.0.0.1:1883-1893:1883-1893" # MQTT
+    environment:
+      FG_CONTROL_PLANE_PORT: ${FG_CONTROL_PLANE_PORT:-4000}
+      # 0.0.0.0 *inside* the container - required for the default NAT/
+      # port-publish networking above to reach it at all (a container's
+      # own 127.0.0.1 is unreachable from outside it). Safe ONLY because
+      # the host-side port publish above is 127.0.0.1-only, not because of
+      # this value on its own - server.ts logs a loud runtime warning if
+      # this control-plane (no authentication at all) ever ends up
+      # reachable from anywhere else. MUST become 127.0.0.1 together with
+      # enabling `network_mode: host` below - see that comment, step 1.
+      FG_BIND_HOST: 0.0.0.0
+      # Device search limit (R07, see docs/deployment.md); empty = no search.
+      FG_DISCOVERY_ALLOWED_CIDRS: ${FG_DISCOVERY_ALLOWED_CIDRS:-}
+    volumes:
+      # Persists data/instances.json and data/settings.json (the ferrion
+      # connection + configured instances) across container restarts.
+      - ferrion-gateway-data:/app/data
+    restart: unless-stopped
+    # Found live 2026-09-09 on the ferrion production host: Docker's
+    # default json-file driver has no size limit at all, and a persistent
+    # connection error (device unreachable, ferrion control-plane
+    # unreachable) logging on every retry can grow a container's log
+    # completely unbounded - one instance reached 36GB and filled the
+    # host's disk, taking down every other container sharing it. Capped
+    # up front so a bad connection here degrades gracefully instead of
+    # threatening the whole host.
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    # On a Linux host (the primary FLECS/Margo target - see
+    # margo-specification's "standalone device" role), `network_mode: host`
+    # is a simpler alternative to the port list above: it skips Docker's
+    # NAT entirely, matching how a real physical gateway sits directly on
+    # the site network, and needs no published-range bookkeeping as more
+    # instances are added. Not the default here since host networking
+    # isn't portable to Docker Desktop on Mac/Windows, where this compose
+    # file is also meant to just work.
+    #
+    # These two steps are NOT independent - doing only the second one
+    # exposes the control-plane's unauthenticated API (including the
+    # plaintext ferrion API key it stores) to the entire site network:
+    #   1. change FG_BIND_HOST above from 0.0.0.0 back to 127.0.0.1 - the
+    #      container shares the host's own network namespace once
+    #      network_mode: host is enabled, so this is no longer needed for
+    #      NAT to reach it, and leaving it at 0.0.0.0 is what causes the
+    #      exposure.
+    #   2. uncomment the line below.
+    # network_mode: host
+
+volumes:
+  ferrion-gateway-data:

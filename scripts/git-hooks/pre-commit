@@ -1,0 +1,5 @@
+#!/bin/sh
+# Installed into .git/hooks/pre-commit by scripts/install-git-hooks.mjs
+# (that file itself is not tracked by git, so this source lives here).
+node scripts/update-app-info.mjs || exit 1
+git add package.json public/open-source-licenses.js

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ferrion-gateway – About</title>
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="stylesheet" href="fonts.css" />
+    <link rel="stylesheet" href="shared.css" />
+  </head>
+  <body>
+    <div class="top-bar">
+      <a class="back-link md-label-large" href="index.html">
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+        <span data-i18n="backToOverview"></span>
+      </a>
+      <div class="lang-switch" id="lang-switch" role="group" aria-label="Language / Sprache">
+        <button type="button" data-locale="de">Deutsch</button>
+        <button type="button" data-locale="en">English</button>
+      </div>
+    </div>
+
+    <div class="page">
+      <h1 class="md-headline-small" data-i18n="aboutTab"></h1>
+
+      <div class="field">
+        <span class="label md-label-large" data-i18n="aboutAppNameLabel"></span>
+        <p class="value md-body-medium" id="about-name"></p>
+      </div>
+      <div class="field">
+        <span class="label md-label-large" data-i18n="aboutDescriptionLabel"></span>
+        <p class="value md-body-medium" id="about-description"></p>
+      </div>
+      <div class="field">
+        <span class="label md-label-large" data-i18n="aboutVersionLabel"></span>
+        <p class="value md-body-medium" id="about-version"></p>
+      </div>
+      <div class="field">
+        <span class="label md-label-large" data-i18n="aboutContactLabel"></span>
+        <!-- A fixed, non-localized postal address, not read from the
+             translations dictionary - matches ferrion's own AboutSection.tsx. -->
+        <address class="value md-body-medium" id="about-contact"></address>
+      </div>
+    </div>
+
+    <script type="module" src="about-page.js"></script>
+  </body>
+</html>

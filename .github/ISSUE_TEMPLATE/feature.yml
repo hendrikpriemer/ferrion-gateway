@@ -1,0 +1,16 @@
+name: Feature request
+description: A device, protocol or behaviour the gateway should support
+labels: [enhancement]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What do you need
+      description: The problem first, then the solution you have in mind.
+    validations:
+      required: true
+  - type: textarea
+    id: device
+    attributes:
+      label: Devices involved
+      description: Manufacturer, model, protocol, firmware - as far as it matters.

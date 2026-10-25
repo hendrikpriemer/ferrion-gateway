@@ -1,0 +1,80 @@
+# Margo Application Description (https://margo.org, spec:
+# https://github.com/margo/specification) - describes ferrion-gateway as a
+# Margo-conformant, Compose-deployable app, so it can be onboarded onto a
+# FLECS-managed edge device (or any other Margo-compliant "standalone
+# device") the same way as any other app. `packageLocation` points
+# directly at this repo's own docker-compose.yml, per the spec's
+# ComponentProperties.packageLocation definition ("a direct path to the
+# compose.yaml").
+#
+# Not yet published to a FLECS/Margo catalog - `icon`/`releaseNotes` are
+# still omitted rather than pointing at files that don't exist yet; add
+# real assets under resources/ before actual submission. `licenseFile` is
+# set: the repo now carries a real LICENSE (Apache-2.0).
+apiVersion: margo.org/v1-alpha1
+kind: ApplicationDescription
+metadata:
+  id: ferrion-gateway
+  name: ferrion Gateway
+  description: >-
+    Real OPC UA/Modbus TCP/MQTT gateway client and reader logic for
+    ferrion's Live-Datenanbindung, with a built-in simulated-device driver
+    (AVENTICS AF2/DS1) as a first-class, permanent device driver for
+    testing without real hardware.
+  version: 0.1.0
+  catalog:
+    application:
+      tagline: Gateway software for ferrion, with a built-in simulated-device driver for testing without real hardware.
+      descriptionFile: ./README.md
+      licenseFile: ./LICENSE
+      tags: ["gateway", "opc-ua", "modbus", "mqtt", "iiot", "simulation", "ferrion"]
+    organization:
+      - name: ferrion
+deploymentProfiles:
+  - type: compose
+    id: ferrion-gateway-compose
+    description: >-
+      Runs the control-plane Web UI (create/start/stop simulated gateway
+      instances) plus whichever simulated protocol servers those
+      instances start on demand. See the ports published in
+      docker-compose.yml for the per-protocol port range.
+    requiredResources:
+      cpu:
+        cores: 0.5
+        architectures: [amd64, arm64]
+      # Measured 2026-08-16 (see README's "Resource usage"): ~55Mi baseline
+      # (control-plane only) + ~85Mi per Modbus/MQTT instance or ~144Mi per
+      # OPC UA instance (each is its own forked Node process). This covers
+      # baseline + a small handful of instances, not a static ceiling for
+      # however many an operator actually configures at runtime - a single
+      # manifest value can't express that per-instance scaling, so size
+      # the device for the number of instances you actually intend to run
+      # concurrently.
+      memory: 512Mi
+      storage: 512Mi
+      interfaces:
+        - type: ethernet
+    components:
+      - name: ferrion-gateway
+        properties:
+          packageLocation: ./docker-compose.yml
+parameters:
+  controlPlanePort:
+    value: 4000
+    targets:
+      - pointer: ENV.FG_CONTROL_PLANE_PORT
+        components: ["ferrion-gateway"]
+configuration:
+  sections:
+    - name: Network Configuration
+      settings:
+        - parameter: controlPlanePort
+          name: Control-Plane Port
+          description: Port the Web UI (instance management) is served on
+          schema: portRange
+  schema:
+    - name: portRange
+      dataType: integer
+      minValue: 1024
+      maxValue: 65535
+      allowEmpty: false

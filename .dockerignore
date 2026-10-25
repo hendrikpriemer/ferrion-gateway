@@ -1,0 +1,19 @@
+node_modules
+dist
+coverage
+data
+config/instances/*.json
+!config/instances/example.instance.json
+fleet.config.json
+.env
+*.log
+.git
+test
+# Tests and developer-only tooling have no business in the shipped image
+# (35 *.test.ts files were in it before this - no secrets, just weight and
+# surface).
+**/*.test.ts
+scripts/git-hooks
+docs
+vitest.config.ts
+eslint.config.mjs

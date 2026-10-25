@@ -1,0 +1,55 @@
+/* Both fonts are served by the gateway itself (src/control-plane/font-files.ts,
+   straight from the npm packages @fontsource/roboto and material-symbols),
+   not from Google's font CDN: every page view used to send the browser's
+   address to Google, and a site network without internet access had no
+   icons. Linked where the two Google stylesheets used to be, before each
+   page's own rules, so those still override the defaults below exactly as
+   they overrode Google's. */
+
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/roboto-latin-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fonts/roboto-latin-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/roboto-latin-700.woff2") format("woff2");
+}
+
+/* The variable icon font with all four axes (FILL, GRAD, opsz, wght). */
+@font-face {
+  font-family: "Material Symbols Outlined";
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: block;
+  src: url("fonts/material-symbols-outlined.woff2") format("woff2");
+}
+
+/* The class rules Google's stylesheet brought along, unchanged. */
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+}

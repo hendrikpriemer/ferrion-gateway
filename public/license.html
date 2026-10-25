@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ferrion-gateway – Lizenz</title>
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="stylesheet" href="fonts.css" />
+    <link rel="stylesheet" href="shared.css" />
+  </head>
+  <body>
+    <div class="top-bar">
+      <a class="back-link md-label-large" href="index.html">
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+        <span data-i18n="backToOverview"></span>
+      </a>
+      <div class="lang-switch" id="lang-switch" role="group" aria-label="Language / Sprache">
+        <button type="button" data-locale="de">Deutsch</button>
+        <button type="button" data-locale="en">English</button>
+      </div>
+    </div>
+
+    <div class="page">
+      <h1 class="md-headline-small" data-i18n="licenseHeading"></h1>
+      <!--
+        This software is under Apache-2.0, so its licence terms ARE the
+        Apache licence - there is no separate end user agreement to show
+        alongside it, and showing one would imply terms that do not exist
+        and would contradict the grant. This page replaced the placeholder
+        EULA for exactly that reason.
+
+        The text is fetched from /LICENSE, the same file the repo and the
+        image carry, rather than being pasted in here. A copy would be free
+        to drift from the licence actually being granted, which is the one
+        thing this page must not do.
+      -->
+      <p class="md-body-medium" data-i18n="licenseIntro" style="color: var(--md-on-surface-variant)"></p>
+      <div class="eula-box">
+        <pre id="license-text" style="white-space: pre-wrap; font-family: ui-monospace, monospace; margin: 0"
+          data-i18n="licenseLoading"></pre>
+      </div>
+      <p class="md-body-medium" style="color: var(--md-on-surface-variant)">
+        <a href="/NOTICE" data-i18n="licenseNoticeLink"></a>
+      </p>
+    </div>
+    </div>
+
+    <script type="module" src="license-page.js"></script>
+  </body>
+</html>

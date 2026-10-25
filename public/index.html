@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ferrion-gateway</title>
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="stylesheet" href="fonts.css" />
+    <style>
+      /* Material Design 3 tokens, matching ~/asset-manager's globals.css
+         (brand seed #185FA5) exactly, so this tool reads as part of the
+         same platform rather than a separate one-off dev page. */
+      :root {
+        color-scheme: light dark;
+        --md-primary: #1960a6;
+        --md-on-primary: #ffffff;
+        --md-error: #ba1a1a;
+        --md-on-error: #ffffff;
+        --md-background: #fdfcff;
+        --md-on-background: #1a1c1e;
+        --md-surface-container-low: #f2f3fa;
+        --md-surface-container-high: #e7e8ee;
+        --md-on-surface: #1a1c1e;
+        --md-on-surface-variant: #43474e;
+        --md-outline: #73777f;
+        --md-outline-variant: #c3c6cf;
+        --status-live: #16a34a;
+        --status-pending: #eab308;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --md-primary: #a4c9ff;
+          --md-on-primary: #00315d;
+          --md-error: #ffb4ab;
+          --md-on-error: #690005;
+          --md-background: #1a1c1e;
+          --md-on-background: #e3e2e6;
+          --md-surface-container-low: #191c20;
+          --md-surface-container-high: #272a2f;
+          --md-on-surface: #e3e2e6;
+          --md-on-surface-variant: #c3c6cf;
+          --md-outline: #8d9199;
+          --md-outline-variant: #43474e;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--md-background);
+        color: var(--md-on-background);
+        padding: 2rem;
+      }
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 20;
+        font-size: 1.125rem;
+        line-height: 1;
+        vertical-align: -0.2em;
+      }
+      /* A focused subset of ferrion's Material 3 type scale - only the
+         sizes this page actually uses. */
+      .md-headline-small {
+        font-size: 1.5rem;
+        line-height: 2rem;
+        font-weight: 700;
+      }
+      .md-title-medium {
+        font-size: 1rem;
+        line-height: 1.5rem;
+        font-weight: 500;
+        letter-spacing: 0.009375rem;
+      }
+      .md-body-medium {
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        letter-spacing: 0.015625rem;
+      }
+      .md-body-small {
+        font-size: 0.75rem;
+        line-height: 1rem;
+        letter-spacing: 0.025rem;
+      }
+      .md-label-large {
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        font-weight: 500;
+        letter-spacing: 0.00625rem;
+      }
+      .subtitle {
+        color: var(--md-on-surface-variant);
+        margin: 0 0 2rem;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 320px;
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        align-items: start;
+      }
+      .sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      .hint {
+        color: var(--md-on-surface-variant);
+        margin: 0 0 0.75rem;
+      }
+      .card {
+        background: var(--md-surface-container-low);
+        border: 1px solid var(--md-outline-variant);
+        border-radius: 1rem;
+        padding: 1.25rem;
+        box-shadow: 0px 1px 2px 0px rgb(0 0 0 / 0.3), 0px 1px 3px 1px rgb(0 0 0 / 0.15);
+      }
+      .card h2 {
+        margin: 0 0 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+      }
+      .instances {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      }
+      /* The bridge card (see app.js's renderInstances()) - always exactly
+         one (routes.ts's ensureBridgeInstance()), and the only card whose
+         content (the tracked-sensors table) actually benefits from more
+         width. Spanning every column it's given, rather than sizing like
+         a normal ~280-400px auto-fill card, is what lets that table use a
+         large screen's actual available width instead of horizontal-
+         scrolling unnecessarily. A no-op once the grid is already down to
+         a single column (narrow layout, see the @media rules below).
+       */
+      .instance-card--wide {
+        grid-column: 1 / -1;
+      }
+      .instance-card h3 {
+        margin: 0;
+        font-weight: 500;
+      }
+      .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.4rem;
+        /* Caps how far a label/value pair can spread apart - without this,
+           a metadata row (name/status, "Instanztyp: Bridge", ...) in a
+           card wider than its content needs (the bridge card's
+           --wide above, or just a narrow grid with few enough cards to
+           leave a column stretched) pushes its two ends across the whole
+           card instead of staying visually compact like every other row.
+           .actions/.tracked-sensors aren't .row elements, so they're
+           unaffected and still use the card's full width as intended. */
+        max-width: 28rem;
+      }
+      /* Flex children default to min-width: auto, which stops them from
+         ever shrinking below their own content width - the actual cause
+         of a row's value overflowing a narrow card instead of
+         truncating/wrapping. */
+      .row > * {
+        min-width: 0;
+      }
+      .row .label {
+        color: var(--md-on-surface-variant);
+        flex-shrink: 0;
+      }
+      /* The same dot + label pattern as ferrion's own
+         GatewayStatusIndicator/AasRepositoryStatusIndicator components. */
+      .status-indicator {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        color: var(--md-on-surface-variant);
+      }
+      .status-dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 999px;
+        flex-shrink: 0;
+      }
+      .status-dot.stopped {
+        background: var(--md-outline-variant);
+      }
+      .status-dot.starting {
+        background: var(--status-pending);
+      }
+      .status-dot.running {
+        background: var(--status-live);
+      }
+      .status-dot.error {
+        background: var(--md-error);
+      }
+      .status-dot.degraded {
+        background: var(--status-pending);
+      }
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.8125rem;
+        background: color-mix(in srgb, var(--md-on-surface) 6%, transparent);
+        padding: 0.05rem 0.3rem;
+        border-radius: 4px;
+      }
+      button {
+        font-family: inherit;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        font-weight: 500;
+        letter-spacing: 0.00625rem;
+        border-radius: 999px;
+        border: none;
+        background: transparent;
+        color: var(--md-primary);
+        padding: 0.5rem 1rem;
+        /* Comfortable touch target (≥44px) on tablets/phones, not just
+           MD3's 40px desktop-button spec. */
+        min-height: 2.75rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.375rem;
+        transition: background-color 0.15s;
+        -webkit-tap-highlight-color: transparent;
+      }
+      button:hover {
+        background: color-mix(in srgb, var(--md-primary) 8%, transparent);
+      }
+      button.primary {
+        background: var(--md-primary);
+        color: var(--md-on-primary);
+      }
+      button.primary:hover {
+        background: color-mix(in srgb, var(--md-primary) 90%, black);
+      }
+      button.danger {
+        color: var(--md-error);
+      }
+      button.danger:hover {
+        background: color-mix(in srgb, var(--md-error) 8%, transparent);
+      }
+      button:disabled {
+        opacity: 0.38;
+        cursor: default;
+        background: transparent;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 0.75rem;
+      }
+      form {
+        display: grid;
+        gap: 1rem;
+      }
+      label {
+        display: grid;
+        gap: 0.25rem;
+        color: var(--md-on-surface-variant);
+      }
+      /* Overrides the stacked (display:grid) label layout above - a
+         checkbox sits next to its text, not above/below it. min-height
+         matches the same 44px touch-target the rest of the form already
+         uses (see input/select below); the checkbox itself is sized up
+         from the ~13px browser default for the same touch-friendliness
+         reason, not just visual weight. */
+      .checkbox-field {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        min-height: 2.75rem;
+        cursor: pointer;
+      }
+      .checkbox-field input[type="checkbox"] {
+        width: 1.25rem;
+        height: 1.25rem;
+        flex-shrink: 0;
+        accent-color: var(--md-primary);
+        cursor: pointer;
+      }
+      /* The bridge-only card's tracked-sensors table (see app.js's
+         renderInstances()) - one row per physical sensor, styled after
+         ferrion asset-manager's own AssetTable.tsx (bordered/hoverable
+         rows, muted header) but plain CSS since this page has no
+         framework. Nested within an instance card, not the card's own
+         primary info, hence the top border/spacing separating it. */
+      .tracked-sensors {
+        margin-top: 0.5rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid var(--md-outline-variant);
+      }
+      .tracked-sensors-heading {
+        margin: 0 0 0.5rem;
+        color: var(--md-on-surface-variant);
+      }
+      /* Horizontal scroll, not wrapping, if the card is narrower than the
+         5-column table needs - the .instances grid can size cards down to
+         280px (see .instances above). */
+      .tracked-sensors-scroll {
+        overflow-x: auto;
+      }
+      .tracked-sensors-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        text-align: left;
+      }
+      .tracked-sensors-table th,
+      .tracked-sensors-table td {
+        padding: 0.375rem 0.5rem 0.375rem 0;
+        border-bottom: 1px solid var(--md-outline-variant);
+        white-space: nowrap;
+      }
+      .tracked-sensors-table th {
+        color: var(--md-on-surface-variant);
+        font-weight: 500;
+      }
+      .tracked-sensors-table tbody tr:last-child td {
+        border-bottom: none;
+      }
+      .tracked-sensors-table tbody tr:hover {
+        background: color-mix(in srgb, var(--md-on-surface) 4%, transparent);
+      }
+      /* Per-metric breakdown under a sensor's name (Befund 2) - which
+         datapoint of a live sensor is itself dark. */
+      .tracked-metrics {
+        list-style: none;
+        margin: 0.25rem 0 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.125rem;
+      }
+      .tracked-metric {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        color: var(--md-on-surface-variant);
+        font-size: 0.75rem;
+      }
+      .tracked-metric-age {
+        margin-left: auto;
+        padding-left: 0.75rem;
+        font-variant-numeric: tabular-nums;
+      }
+      input,
+      select {
+        font-family: inherit;
+        /* 16px, not 0.875rem/14px - anything smaller makes iOS Safari
+           auto-zoom the page on focus, which is exactly the wrong
+           behavior for a touch-optimized form. */
+        font-size: 1rem;
+        color: var(--md-on-surface);
+        padding: 0.625rem 0.75rem;
+        min-height: 2.75rem;
+        /* Explicit, not left to the parent label's (display:grid) default
+           item-stretch - a plain <input> stretches to fill reliably that
+           way, but <select> doesn't consistently across browsers, so
+           without this the create-instance card's device-template <select>
+           could end up narrower than every <input> above/below it in the
+           very same card (and than the ferrion-connection card's inputs,
+           which has no <select> to expose the difference). */
+        width: 100%;
+        border-radius: 4px;
+        border: 1px solid var(--md-outline);
+        background: var(--md-background);
+      }
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: var(--md-primary);
+        box-shadow: 0 0 0 1px var(--md-primary);
+      }
+      .top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 0.25rem;
+      }
+      .brand-header {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+      }
+      .lang-switch {
+        display: flex;
+        gap: 0.25rem;
+      }
+      .lang-switch button {
+        padding: 0.375rem 0.875rem;
+        min-height: 2.25rem;
+        font-size: 0.8125rem;
+      }
+      .lang-switch button[aria-pressed="true"] {
+        background: var(--md-primary);
+        color: var(--md-on-primary);
+      }
+      .brand-icon {
+        width: 2rem;
+        height: 2rem;
+        flex-shrink: 0;
+      }
+      .brand-title {
+        margin: 0;
+        font-size: 1.5rem;
+        line-height: 2rem;
+        font-weight: 400;
+        color: var(--md-on-surface);
+      }
+      /* Brand concept: "ferrion" is always lowercase, bold, with slightly
+         open letter-spacing (see FerrionLogo.tsx's Sidebar wordmark). */
+      .brand-wordmark {
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+      .empty {
+        color: var(--md-on-surface-variant);
+      }
+      /* A normal in-flow <nav>, not a fixed/sticky bottom bar - matches
+         the ferrion platform's own LoginFooterNav.tsx exactly. */
+      .footer-nav {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        border-top: 1px solid var(--md-outline-variant);
+        padding: 1rem 0;
+        margin-top: 2rem;
+      }
+      .footer-nav a {
+        color: var(--md-on-surface-variant);
+        text-decoration: none;
+      }
+      .footer-nav a:hover {
+        color: var(--md-on-surface);
+        text-decoration: underline;
+      }
+      .advanced-fields {
+        border: 1px solid var(--md-outline-variant);
+        border-radius: 4px;
+        padding: 0.25rem 0.75rem;
+      }
+      .advanced-fields[open] {
+        padding-bottom: 0.75rem;
+      }
+      .advanced-fields summary {
+        cursor: pointer;
+        padding: 0.625rem 0;
+        color: var(--md-on-surface-variant);
+        font-size: 0.875rem;
+      }
+      /* Also used outside .advanced-fields - the bridge-settings card's
+         form has no collapsible wrapper (the whole card already reads as
+         "advanced"), just this same field layout directly. */
+      .form-grid {
+        display: grid;
+        gap: 0.75rem;
+      }
+      .error-text {
+        color: var(--md-error);
+        margin-top: 0.25rem;
+      }
+      /* Our own dialogs instead of the browser's alert()/confirm() -
+         matches ferrion's own ConfirmDialog.tsx/Modal.tsx: rounded-xl
+         surface-container-high panel, elevation-3, scrim/50 backdrop. */
+      .app-dialog {
+        border: none;
+        border-radius: 1.75rem;
+        padding: 1.5rem;
+        max-width: min(90vw, 26rem);
+        background: var(--md-surface-container-high);
+        color: var(--md-on-surface);
+        box-shadow: 0px 1px 3px 0px rgb(0 0 0 / 0.3), 0px 4px 8px 3px rgb(0 0 0 / 0.15);
+      }
+      .app-dialog::backdrop {
+        background: rgb(0 0 0 / 0.5);
+      }
+      .app-dialog p {
+        margin: 0 0 1.25rem;
+      }
+      .app-dialog .actions {
+        justify-content: flex-end;
+        margin-top: 0;
+      }
+      /* Covers phones and tablet portrait (e.g. iPad at 768px) - the
+         320px fixed sidebar column reads as cramped well before desktop
+         widths on a touch device. */
+      @media (max-width: 900px) {
+        body {
+          padding: 1.25rem;
+        }
+        .layout {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+      @media (max-width: 480px) {
+        body {
+          padding: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top-bar">
+      <div class="brand-header">
+        <svg class="brand-icon" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="0" y="0" width="200" height="200" rx="44" fill="#185FA5" />
+          <path
+            d="M143.5,120.3 A48,48 0 1 1 143.5,79.7"
+            fill="none"
+            stroke="#FFFFFF"
+            stroke-width="16"
+            stroke-linecap="round"
+          />
+          <polygon points="88,78 96.66,83 96.66,93 88,98 79.34,93 79.34,83" fill="#FFFFFF" />
+          <polygon points="112,78 120.66,83 120.66,93 112,98 103.34,93 103.34,83" fill="#FFFFFF" />
+          <polygon points="100,100 108.66,105 108.66,115 100,120 91.34,115 91.34,105" fill="#FFFFFF" />
+        </svg>
+        <h1 class="brand-title"><span class="brand-wordmark">ferrion</span> Gateway</h1>
+      </div>
+      <div class="lang-switch" id="lang-switch" role="group" aria-label="Language / Sprache">
+        <button type="button" data-locale="de">Deutsch</button>
+        <button type="button" data-locale="en">English</button>
+      </div>
+    </div>
+    <p class="subtitle md-body-medium" data-i18n="subtitle"></p>
+
+    <div class="layout">
+      <section id="instances" class="instances">
+        <p class="empty md-body-medium" data-i18n="loading"></p>
+      </section>
+
+      <div class="sidebar">
+        <section class="card">
+          <h2 class="md-title-medium" style="justify-content: space-between">
+            <span style="display: flex; align-items: center; gap: 0.375rem">
+              <span class="material-symbols-outlined" aria-hidden="true">vpn_key</span>
+              <span data-i18n="settingsTitle"></span>
+            </span>
+            <span class="status-indicator md-body-small" id="connection-status">
+              <span class="status-dot" id="connection-status-dot" aria-hidden="true"></span>
+              <span id="connection-status-label"></span>
+            </span>
+          </h2>
+          <p class="hint md-body-small" data-i18n="settingsHint"></p>
+          <p class="hint md-body-small" id="connected-gateway-name" hidden></p>
+          <form id="settings-form">
+            <label class="md-body-small">
+              <span data-i18n="baseUrlLabel"></span>
+              <input type="text" name="baseUrl" value="https://localhost:3000" required />
+            </label>
+            <label class="md-body-small">
+              <span data-i18n="apiKeyLabel"></span>
+              <input type="password" name="apiKey" placeholder="gw_…" autocomplete="off" />
+            </label>
+            <label class="checkbox-field md-body-small">
+              <input type="checkbox" name="allowSelfSigned" />
+              <span data-i18n="allowSelfSignedLabel"></span>
+            </label>
+            <div class="actions" style="margin-top: 0">
+              <button type="submit" class="primary" id="settings-save">
+                <span class="material-symbols-outlined" aria-hidden="true">save</span>
+                <span data-i18n="save"></span>
+              </button>
+              <button type="button" id="settings-delete" class="danger" hidden>
+                <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+                <span data-i18n="delete"></span>
+              </button>
+            </div>
+            <p id="settings-error" class="error-text md-body-small" hidden></p>
+            <p id="settings-saved" class="hint md-body-small" hidden>
+              <span data-i18n="saved"></span>
+            </p>
+          </form>
+        </section>
+
+        <section class="card">
+          <h2 class="md-title-medium" id="instance-form-heading">
+            <span class="material-symbols-outlined" aria-hidden="true" id="instance-form-icon">add</span>
+            <span id="instance-form-title">Simulator-Instanz hinzufügen</span>
+          </h2>
+          <form id="create-form">
+            <label class="md-body-small">
+              <span data-i18n="nameLabel"></span>
+              <input type="text" name="instanceName" placeholder="af2-opcua-1" required />
+            </label>
+            <label class="md-body-small">
+              <span data-i18n="templateLabel"></span>
+              <select name="templateId" required></select>
+            </label>
+            <label class="md-body-small">
+              <span data-i18n="serialLabel"></span> <span style="opacity: 0.7" data-i18n="serialHint"></span>
+              <input type="text" name="serialNumber" placeholder="10000456" />
+            </label>
+            <details class="advanced-fields" id="advanced-fields">
+              <summary data-i18n="advancedTitle"></summary>
+              <p class="hint md-body-small" data-i18n="advancedHint"></p>
+              <div class="form-grid">
+                <label class="md-body-small">
+                  <span data-i18n="readingIntervalLabel"></span>
+                  <input type="number" name="readingIntervalMs" min="1" placeholder="5000" />
+                </label>
+                <label class="md-body-small">
+                  <span data-i18n="pushIntervalLabel"></span>
+                  <input type="number" name="readingsPushIntervalMs" min="1" placeholder="5000" />
+                </label>
+                <label class="md-body-small">
+                  <span data-i18n="aggregationLabel"></span>
+                  <select name="aggregation">
+                    <option value="last" data-i18n="aggregationLast"></option>
+                    <option value="avg" data-i18n="aggregationAvg"></option>
+                    <option value="min" data-i18n="aggregationMin"></option>
+                    <option value="max" data-i18n="aggregationMax"></option>
+                  </select>
+                </label>
+              </div>
+            </details>
+            <div class="actions" style="margin-top: 0">
+              <button type="submit" class="primary" id="instance-form-submit">
+                <span class="material-symbols-outlined" aria-hidden="true" id="instance-form-submit-icon">add</span>
+                <span id="instance-form-submit-label" data-i18n="create"></span>
+              </button>
+              <button type="button" id="instance-form-cancel" hidden data-i18n="cancel"></button>
+            </div>
+            <p id="create-error" class="error-text md-body-small" hidden></p>
+          </form>
+        </section>
+
+        <section class="card" id="bridge-settings-card">
+          <h2 class="md-title-medium">
+            <span class="material-symbols-outlined" aria-hidden="true">tune</span>
+            <span data-i18n="bridgeSettingsTitle"></span>
+          </h2>
+          <p class="hint md-body-small" data-i18n="bridgeSettingsHint"></p>
+          <form id="bridge-settings-form">
+            <div class="form-grid">
+              <label class="md-body-small">
+                <span data-i18n="commandsIntervalLabel"></span>
+                <input type="number" name="commandsIntervalMs" min="1" placeholder="3000" />
+              </label>
+              <label class="md-body-small">
+                <span data-i18n="dataSourcesIntervalLabel"></span>
+                <input type="number" name="dataSourcesIntervalMs" min="1" placeholder="15000" />
+              </label>
+              <label class="md-body-small">
+                <span data-i18n="readingIntervalLabel"></span>
+                <input type="number" name="readingIntervalMs" min="1" placeholder="5000" />
+              </label>
+              <label class="md-body-small">
+                <span data-i18n="pushIntervalLabel"></span>
+                <input type="number" name="readingsPushIntervalMs" min="1" placeholder="5000" />
+              </label>
+              <label class="md-body-small">
+                <span data-i18n="aggregationLabel"></span>
+                <select name="aggregation">
+                  <option value="last" data-i18n="aggregationLast"></option>
+                  <option value="avg" data-i18n="aggregationAvg"></option>
+                  <option value="min" data-i18n="aggregationMin"></option>
+                  <option value="max" data-i18n="aggregationMax"></option>
+                </select>
+              </label>
+              <label class="md-body-small">
+                <span data-i18n="httpRequestTimeoutLabel"></span>
+                <input type="number" name="httpRequestTimeoutMs" min="1" placeholder="10000" />
+              </label>
+              <label class="md-body-small">
+                <span data-i18n="readingBufferMaxSizeLabel"></span>
+                <input type="number" name="readingBufferMaxSize" min="1" placeholder="10000" />
+              </label>
+            </div>
+            <div class="actions" style="margin-top: 0">
+              <button type="submit" class="primary" id="bridge-settings-save">
+                <span class="material-symbols-outlined" aria-hidden="true">save</span>
+                <span data-i18n="save"></span>
+              </button>
+            </div>
+            <p id="bridge-settings-error" class="error-text md-body-small" hidden></p>
+            <p id="bridge-settings-saved" class="hint md-body-small" hidden>
+              <span data-i18n="saved"></span>
+            </p>
+          </form>
+        </section>
+      </div>
+    </div>
+
+    <nav class="footer-nav md-label-large" aria-label="Info / Info pages">
+      <a href="about.html" data-i18n="aboutTab"></a>
+      <a href="license.html" data-i18n="licenseTab"></a>
+      <a href="licenses.html" data-i18n="licensesTab"></a>
+    </nav>
+
+    <dialog id="confirm-dialog" class="app-dialog">
+      <p id="confirm-dialog-message" class="md-body-medium"></p>
+      <div class="actions">
+        <button type="button" id="confirm-dialog-cancel" data-i18n="cancel"></button>
+        <button type="button" id="confirm-dialog-confirm" class="danger"></button>
+      </div>
+    </dialog>
+
+    <dialog id="alert-dialog" class="app-dialog">
+      <p id="alert-dialog-message" class="md-body-medium"></p>
+      <div class="actions">
+        <button type="button" id="alert-dialog-ok" class="primary" data-i18n="ok"></button>
+      </div>
+    </dialog>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

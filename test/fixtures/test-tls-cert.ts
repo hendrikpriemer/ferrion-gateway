@@ -1,0 +1,56 @@
+// Self-signed, localhost-only, test-only certificate/key pair (valid until
+// 2046) - generated once via `openssl req -x509 -newkey rsa:2048 ...` and
+// embedded here so http-client's TLS test case doesn't need to shell out or
+// depend on openssl being installed on whatever machine runs the tests.
+// Never used against a real network-facing server.
+
+export const TEST_TLS_CERT = `-----BEGIN CERTIFICATE-----
+MIIDJTCCAg2gAwIBAgIUNwwYt9VmAM2IlcEol2vlKLfJDd0wDQYJKoZIhvcNAQEL
+BQAwFDESMBAGA1UEAwwJbG9jYWxob3N0MB4XDTI2MDgxNDEyMzM1MFoXDTQ2MDgw
+OTEyMzM1MFowFDESMBAGA1UEAwwJbG9jYWxob3N0MIIBIjANBgkqhkiG9w0BAQEF
+AAOCAQ8AMIIBCgKCAQEArkR/ahULpItDpP6AtVRS1KfA+D8rZawwfb6tsTUbUpSX
+plKk31kzGZhZfciolg4+OV+BXziHUqrRkg5dKBB7EdNdYAshRgDBoNZYMrBIqxdo
+v0bGI1U4uityjxeDeVatWqLKHHFPuNARIc5oNdUNbpwrZqKHrWDAQ79sep8SCowh
+FpfafKR5JkGvagghm20ij8YN8qQS4xAFPGVnZWqVcWMuMUp7IK1qGlsQe2+dtoFX
+kK+kF4J2lRT3Jn7fPv+bQcs9kkb280oT3Ek14HM0vlXBZxRf7TeyANAgYwGfgCu3
+BybGn0yYjb69QxXJ6OlxwwsWfGdip8MWUPx9XMkfiQIDAQABo28wbTAdBgNVHQ4E
+FgQUfMnan2jK4+HzfeZoHO7jdrZy08EwHwYDVR0jBBgwFoAUfMnan2jK4+HzfeZo
+HO7jdrZy08EwDwYDVR0TAQH/BAUwAwEB/zAaBgNVHREEEzARgglsb2NhbGhvc3SH
+BH8AAAEwDQYJKoZIhvcNAQELBQADggEBAAm5OoX9wwq4TZSlpwGn2qqhBOQbkYUd
+Y1hjGPBzlV7DtLKJ++oUMko4zsy+YjN51osnuEYXCx88OFBTWTx4/0o9dtwLX0e/
+NPnmhhdJkZwkI9oy9vKcRpiWS7ZuqJVKEMnx7tXSP8fmuOd9gztbQxt6hBthF8+j
+MZfiIrroQmchs6ObadIBrX/qRgb7Qr/By8lVYwKB5t6VaNEqqa+MOu3nvASun4mP
+28RyosaOzxEhQwUQB6v2i42bZ9TCVFjnA4/n8elDPjykFZaPOvu4LFfRVyWZ/CKY
+qAziWaEnHY+bqrxYYQRW+0pDspZPXJiE5ZO7cGOulyNx3Muum7UhzXA=
+-----END CERTIFICATE-----
+`;
+
+export const TEST_TLS_KEY = `-----BEGIN PRIVATE KEY-----
+MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCuRH9qFQuki0Ok
+/oC1VFLUp8D4PytlrDB9vq2xNRtSlJemUqTfWTMZmFl9yKiWDj45X4FfOIdSqtGS
+Dl0oEHsR011gCyFGAMGg1lgysEirF2i/RsYjVTi6K3KPF4N5Vq1aosoccU+40BEh
+zmg11Q1unCtmooetYMBDv2x6nxIKjCEWl9p8pHkmQa9qCCGbbSKPxg3ypBLjEAU8
+ZWdlapVxYy4xSnsgrWoaWxB7b522gVeQr6QXgnaVFPcmft8+/5tByz2SRvbzShPc
+STXgczS+VcFnFF/tN7IA0CBjAZ+AK7cHJsafTJiNvr1DFcno6XHDCxZ8Z2KnwxZQ
+/H1cyR+JAgMBAAECggEAAcrOjKa+weh0v6Omazb8yxcWkvcDWT5WGVT2sFXdfBHv
+JVTAQVPHhMHeWb7QjQqEdU6YJASOz7jWAuyG5LyWp25HDY/PvcqQMzlBGvRZKvlI
+qH7v1rkvpiqAORyCy6Kqkb4O2hAIQ9xP8MsQo00XoEWW5K1TO+M81vWHBhPQua8G
+4/xgpIh8kd/m8g/TxcmYMPQsI6DoYTcyKmyAVYV9gzKv5zHcsCjJCbNWeefa+mth
+tITMeDtgtZZkl3OPt/vm/ruGOmOyRCrhZ+1Hg2DqrG42IlsA44E/2HGwLudRAyBx
+Qn7GO6HXAJUTKmHLKK/ut2hjSSpwTgByRYvnZd4LCQKBgQDlsloXY8TlLEpwlu4E
+GGy0qz5R46JzSXAvD8wA3THe3S7c2fE72tiLVX4PoxnHZfOsieSAIBysF+j6SFTt
+Joky5WmNsIrJ8Kj5NLuhjYWKH4R0llVbJDLcqsuyo2OzufZ9I6jofbZxv2RmsGpO
+LdoKHT6/Zc2EsYKuJQOMZc1hSwKBgQDCOTg0sqbyCPq7a38193ezklm9p0wQvX0g
+w4PXtd3sQJFV8aVBiyi8ZoZWNme7n2tvz+hkJQjBxCjhlGuXHGeaQZjGtC9khBfF
+RIn+bJfOklO+i/IzsKhnTdacnyRo8nlygXwSZGhU++b30uASt5tn5fLRj30zomfN
+932FLqZR+wKBgQC3ylDJ/Fu0oA7kLfA/OKfqnEbeUU1QAAgSsAok+tiHoeV4c67R
+nNe+DWcz7eaXpR0oBqHeX1Nx5CPX9/50T2xiXCxsYkF7OeSKmsYzi0C592QNwaiE
+p99GsCcTRidlzLvM/7aMaOKN+33DqQ82hPu9Mg9eKIAc18hfvWAse9ytJwKBgGL3
+KQ6hIbQeozQw2Ec1a8cSgavDvVyiUUoKlfmqcARb+jJiySQWtpEZZMY1PrI5z1LQ
+C8hLnqStQW+AYzpCfP/7AM/vLF75d+tKu03rI4dcxFNJmAaCs6y/2uU/qhvXwc54
+8DGm/AqhuNT6nLas3AEbCJmDlfZjgKVQwKLGXHVVAoGAbxOUqSrVveM8HoI7GO3Z
+K8F0XYAU9eqW4+IcsKRXGobfX+rB3mqvJFoTLn8vuhmjACTv1BL/e8HLUeleyoLz
+RFSKVaHKG2m+tm2Uz9z1ZqR9daKGUInXilknqg6agJV76BViaDKq0PFefR31UwCm
+Cz0Q7DcfuIDea1axNvOxQkQ=
+-----END PRIVATE KEY-----
+`;

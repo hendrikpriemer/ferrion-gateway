@@ -1,0 +1,286 @@
+/* Shared by every public/ page (index.html, about.html, license.html,
+   licenses.html) - MD3 tokens, typography, and the handful of primitives
+   (.card, button, top bar/brand header, lang switch) common to all of
+   them. index.html itself keeps its own additional, page-specific rules
+   (.layout, forms, dialogs, ...) in its own <style> block rather than
+   here - only what's genuinely shared lives in this file. */
+
+:root {
+  color-scheme: light dark;
+  --md-primary: #1960a6;
+  --md-on-primary: #ffffff;
+  --md-error: #ba1a1a;
+  --md-on-error: #ffffff;
+  --md-background: #fdfcff;
+  --md-on-background: #1a1c1e;
+  --md-surface-container-low: #f2f3fa;
+  --md-surface-container-high: #e7e8ee;
+  --md-on-surface: #1a1c1e;
+  --md-on-surface-variant: #43474e;
+  --md-outline: #73777f;
+  --md-outline-variant: #c3c6cf;
+  --status-live: #16a34a;
+  --status-pending: #eab308;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --md-primary: #a4c9ff;
+    --md-on-primary: #00315d;
+    --md-error: #ffb4ab;
+    --md-on-error: #690005;
+    --md-background: #1a1c1e;
+    --md-on-background: #e3e2e6;
+    --md-surface-container-low: #191c20;
+    --md-surface-container-high: #272a2f;
+    --md-on-surface: #e3e2e6;
+    --md-on-surface-variant: #c3c6cf;
+    --md-outline: #8d9199;
+    --md-outline-variant: #43474e;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--md-background);
+  color: var(--md-on-background);
+  padding: 2rem;
+}
+.material-symbols-outlined {
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 20;
+  font-size: 1.125rem;
+  line-height: 1;
+  vertical-align: -0.2em;
+}
+/* A focused subset of ferrion's Material 3 type scale - only the sizes
+   these pages actually use. */
+.md-headline-small {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+}
+.md-title-medium {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  letter-spacing: 0.009375rem;
+}
+.md-title-small {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  letter-spacing: 0.00625rem;
+}
+.md-body-medium {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.015625rem;
+}
+.md-body-small {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  letter-spacing: 0.025rem;
+}
+.md-label-large {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  letter-spacing: 0.00625rem;
+}
+.card {
+  background: var(--md-surface-container-low);
+  border: 1px solid var(--md-outline-variant);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0px 1px 2px 0px rgb(0 0 0 / 0.3), 0px 1px 3px 1px rgb(0 0 0 / 0.15);
+}
+button {
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  letter-spacing: 0.00625rem;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: var(--md-primary);
+  padding: 0.5rem 1rem;
+  min-height: 2.75rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  transition: background-color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+button:hover {
+  background: color-mix(in srgb, var(--md-primary) 8%, transparent);
+}
+button.primary {
+  background: var(--md-primary);
+  color: var(--md-on-primary);
+}
+button.primary:hover {
+  background: color-mix(in srgb, var(--md-primary) 90%, black);
+}
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.25rem;
+}
+.brand-header {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+.brand-icon {
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+}
+.brand-title {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 400;
+  color: var(--md-on-surface);
+}
+/* Brand concept: "ferrion" is always lowercase, bold, with slightly open
+   letter-spacing (see FerrionLogo.tsx's Sidebar wordmark). */
+.brand-wordmark {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.lang-switch {
+  display: flex;
+  gap: 0.25rem;
+}
+.lang-switch button {
+  padding: 0.375rem 0.875rem;
+  min-height: 2.25rem;
+  font-size: 0.8125rem;
+}
+.lang-switch button[aria-pressed="true"] {
+  background: var(--md-primary);
+  color: var(--md-on-primary);
+}
+.empty {
+  color: var(--md-on-surface-variant);
+}
+
+/* about.html / license.html / licenses.html's shared page shell - a centered
+   narrow column, matching ferrion's own AboutSection/EulaSection width
+   (licenses.html overrides max-width for its wider table, same as the
+   platform's licenses page dropping max-w-2xl). */
+.page {
+  max-width: 42rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.page--wide {
+  max-width: none;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  align-self: flex-start;
+  color: var(--md-on-surface-variant);
+  text-decoration: none;
+}
+.back-link:hover {
+  color: var(--md-on-surface);
+  text-decoration: underline;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.field .label {
+  color: var(--md-on-surface);
+}
+.field .value {
+  color: var(--md-on-surface-variant);
+  margin: 0;
+}
+address.value {
+  font-style: normal;
+}
+
+/* index.html's own footer nav (see below) - a normal in-flow <nav>, not a
+   fixed/sticky bottom bar, matching the ferrion platform's own
+   LoginFooterNav.tsx exactly. */
+.footer-nav {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  border-top: 1px solid var(--md-outline-variant);
+  padding: 1rem 0;
+  margin-top: 2rem;
+}
+.footer-nav a {
+  color: var(--md-on-surface-variant);
+  text-decoration: none;
+}
+.footer-nav a:hover {
+  color: var(--md-on-surface);
+  text-decoration: underline;
+}
+
+/* licenses.html's table - plain CSS after ferrion's own AssetTable.tsx
+   (bordered/hoverable rows, muted header), same pattern as index.html's
+   own .tracked-sensors-table. */
+.licenses-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.licenses-table th,
+.licenses-table td {
+  padding: 0.75rem 1rem 0.75rem 0;
+  border-bottom: 1px solid var(--md-outline-variant);
+}
+.licenses-table th:first-child,
+.licenses-table td:first-child {
+  padding-left: 1rem;
+}
+.licenses-table thead tr {
+  background: var(--md-surface-container-low);
+  border-bottom: 1px solid var(--md-outline-variant);
+}
+.licenses-table tbody tr:hover {
+  background: color-mix(in srgb, var(--md-on-surface) 4%, transparent);
+}
+.licenses-table-scroll {
+  overflow-x: auto;
+}
+
+/* license.html's scrollable legal-text box, matching EulaSection.tsx's
+   max-h-[70vh] overflow-y-auto rounded-lg bg-surface-container-low p-6. */
+.eula-box {
+  max-height: 70vh;
+  overflow-y: auto;
+  border-radius: 0.75rem;
+  background: var(--md-surface-container-low);
+  padding: 1.5rem;
+}
+.eula-box p {
+  margin: 0 0 1rem;
+  color: var(--md-on-surface-variant);
+}
+.eula-box p:last-child {
+  margin-bottom: 0;
+}

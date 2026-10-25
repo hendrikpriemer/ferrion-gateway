@@ -1,0 +1,13 @@
+{
+    "D0": {
+        "UG1": {
+            "name": "",
+            "nominal": 230.0,
+            "threeWire": false,
+            "transformer": {
+                "prim": 400.0,
+                "sec": 400.0
+            }
+        }
+    }
+}

@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Read-only token for every job: nothing here pushes, comments or publishes
+# (the SBOM goes up as a workflow artifact, which needs no token scope).
+# The repository default is read-only too (checked 2026-10-17); stated here
+# so it travels with the workflow and holds if that setting ever changes -
+# a compromised action or dependency should never hold write access.
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm run test
+
+  # Separate from `check`, only for an actual commit on main (not per-PR
+  # noise). sbom.cdx.json stays gitignored (regenerated, not committed) -
+  # this automates the "regenerate at release" its own comment calls for,
+  # feeding the CRA SBOM documentation requirement.
+  sbom:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+
+      # --package-lock-only (see package.json's own sbom script) reads only
+      # package-lock.json - no npm ci/node_modules needed here at all.
+      - name: Generate SBOM
+        run: npm run sbom
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: sbom
+          path: sbom.cdx.json
+          retention-days: 400

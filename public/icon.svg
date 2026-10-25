@@ -1,0 +1,23 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+<!-- Full-bleed on purpose. This used to be scaled to 80% with a transparent
+     margin, added against Safari's circular crop of the tab favicon - but
+     that margin never solved the problem it was added for and caused a
+     visible one instead:
+
+     * A square only survives an inscribed circular crop from 70.7% down.
+       At 80% the corners were still being cut, so the margin bought
+       nothing.
+     * Browsers draw their own light plate behind a transparent favicon,
+       and they size it to the image box. The margin therefore pushed that
+       plate well outside the blue square, which read as two nested frames
+       - reported from a Safari tab, and reproduced here by compositing our
+       own icon over a plate.
+
+     Filling the box means the plate sits flush against the blue, so only
+     one frame is visible. -->
+<rect x="0" y="0" width="200" height="200" rx="44" fill="#185FA5"/>
+<path d="M143.5,120.3 A48,48 0 1 1 143.5,79.7" fill="none" stroke="#FFFFFF" stroke-width="16" stroke-linecap="round"/>
+<polygon points="88,78 96.66,83 96.66,93 88,98 79.34,93 79.34,83" fill="#FFFFFF"/>
+<polygon points="112,78 120.66,83 120.66,93 112,98 103.34,93 103.34,83" fill="#FFFFFF"/>
+<polygon points="100,100 108.66,105 108.66,115 100,120 91.34,115 91.34,105" fill="#FFFFFF"/>
+</svg>

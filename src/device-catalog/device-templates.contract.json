@@ -1,0 +1,5123 @@
+[
+  {
+    "id": "aventics-af2-mqtt",
+    "protocol": "MQTT",
+    "metrics": [
+      {
+        "metricKey": "massFlowRate",
+        "unit": "kg/h",
+        "addressing": {
+          "jsonField": "massFlowRate",
+          "jsonFieldFallbacks": [
+            "MassFlowRate.value",
+            "MassFlowRate"
+          ]
+        }
+      },
+      {
+        "metricKey": "volumetricFlowRate",
+        "unit": "m³/h",
+        "addressing": {
+          "jsonField": "volumetricFlowRate",
+          "jsonFieldFallbacks": [
+            "VolumetricFlowRate.value",
+            "VolumetricFlowRate"
+          ]
+        }
+      },
+      {
+        "metricKey": "temperature",
+        "unit": "°C",
+        "addressing": {
+          "jsonField": "temperature",
+          "jsonFieldFallbacks": [
+            "Temperature.value",
+            "Temperature"
+          ]
+        }
+      },
+      {
+        "metricKey": "pressure",
+        "unit": "bar",
+        "addressing": {
+          "jsonField": "pressure",
+          "jsonFieldFallbacks": [
+            "Pressure.value",
+            "Pressure"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "aventics-af2-opcua",
+    "protocol": "OPC_UA",
+    "namespaceUriTemplate": "urn:AVENTICS:AF2:{serialNumber}",
+    "metrics": [
+      {
+        "metricKey": "massFlowRate",
+        "unit": "kg/h",
+        "addressing": {
+          "nodeIdentifier": 6002
+        }
+      },
+      {
+        "metricKey": "volumetricFlowRate",
+        "unit": "m³/h",
+        "addressing": {
+          "nodeIdentifier": 6010
+        }
+      },
+      {
+        "metricKey": "temperature",
+        "unit": "°C",
+        "addressing": {
+          "nodeIdentifier": 6014
+        }
+      },
+      {
+        "metricKey": "pressure",
+        "unit": "bar",
+        "addressing": {
+          "nodeIdentifier": 6013
+        }
+      }
+    ]
+  },
+  {
+    "id": "aventics-ds1-modbus-tcp",
+    "protocol": "MODBUS_TCP",
+    "metrics": [
+      {
+        "metricKey": "temperature",
+        "unit": "°C",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 1000,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "relativeHumidity",
+        "unit": "%",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 1004,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "dewPoint",
+        "unit": "°Ctd",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 1006,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "absoluteHumidity",
+        "unit": "g/m³",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 1010,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "moistureContent",
+        "unit": "g/kg",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 1014,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "vaporRatio",
+        "unit": "ppm",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 1016,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "waterVaporPartialPressure",
+        "unit": "hPa",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 1020,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "atmosphericDewPoint",
+        "unit": "°Ctd",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 1022,
+          "registerCount": 2
+        }
+      }
+    ]
+  },
+  {
+    "id": "janitza-umg801-modbus-tcp",
+    "protocol": "MODBUS_TCP",
+    "metrics": [
+      {
+        "metricKey": "voltageL1N",
+        "unit": "V",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19000,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "voltageL2N",
+        "unit": "V",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19002,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "voltageL3N",
+        "unit": "V",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19004,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "currentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19012,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "currentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19014,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "currentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19016,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "activePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19026,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "apparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19034,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "reactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19042,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "powerFactorL1",
+        "unit": "-",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19044,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "powerFactorL2",
+        "unit": "-",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19046,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "powerFactorL3",
+        "unit": "-",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19048,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "frequency",
+        "unit": "Hz",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19050,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "activeEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19060,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19200,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19202,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19204,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19214,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19222,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19230,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19244,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "group3CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19300,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "group3CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19302,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "group3CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19304,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "group3ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19314,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "group3ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19322,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "group3ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19330,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "group3ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19344,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module1Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19400,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module1Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19402,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module1Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19404,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module1Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19414,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module1Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19422,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module1Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19430,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module1Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19444,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module1Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19500,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module1Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19502,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module1Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19504,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module1Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19514,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module1Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19522,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module1Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19530,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module1Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19544,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module2Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19600,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module2Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19602,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module2Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19604,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module2Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19614,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module2Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19622,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module2Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19630,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module2Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19644,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module2Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19700,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module2Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19702,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module2Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19704,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module2Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19714,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module2Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19722,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module2Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19730,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module2Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19744,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module3Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19800,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module3Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19802,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module3Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19804,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module3Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19814,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module3Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19822,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module3Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19830,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module3Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19844,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module3Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19900,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module3Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19902,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module3Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19904,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module3Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19914,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module3Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19922,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module3Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19930,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module3Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 19944,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module4Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20000,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module4Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20002,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module4Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20004,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module4Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20014,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module4Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20022,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module4Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20030,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module4Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20044,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module4Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20100,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module4Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20102,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module4Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20104,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module4Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20114,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module4Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20122,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module4Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20130,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module4Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20144,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module5Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20200,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module5Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20202,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module5Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20204,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module5Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20214,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module5Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20222,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module5Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20230,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module5Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20244,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module5Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20300,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module5Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20302,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module5Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20304,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module5Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20314,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module5Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20322,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module5Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20330,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module5Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20344,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module6Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20400,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module6Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20402,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module6Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20404,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module6Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20414,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module6Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20422,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module6Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20430,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module6Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20444,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module6Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20500,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module6Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20502,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module6Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20504,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module6Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20514,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module6Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20522,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module6Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20530,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module6Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20544,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module7Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20600,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module7Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20602,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module7Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20604,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module7Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20614,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module7Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20622,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module7Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20630,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module7Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20644,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module7Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20700,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module7Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20702,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module7Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20704,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module7Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20714,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module7Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20722,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module7Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20730,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module7Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20744,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module8Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20800,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module8Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20802,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module8Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20804,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module8Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20814,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module8Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20822,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module8Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20830,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module8Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20844,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module8Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20900,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module8Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20902,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module8Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20904,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module8Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20914,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module8Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20922,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module8Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20930,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module8Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 20944,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module9Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21000,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module9Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21002,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module9Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21004,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module9Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21014,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module9Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21022,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module9Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21030,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module9Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21044,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module9Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21100,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module9Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21102,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module9Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21104,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module9Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21114,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module9Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21122,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module9Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21130,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module9Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21144,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module10Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21200,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module10Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21202,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module10Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21204,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module10Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21214,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module10Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21222,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module10Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21230,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module10Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21244,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module10Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21300,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module10Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21302,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module10Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21304,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module10Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21314,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module10Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21322,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module10Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21330,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module10Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21344,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module11Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21400,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module11Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21402,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module11Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21404,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module11Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21414,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module11Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21422,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module11Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21430,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module11Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21444,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module11Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21500,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module11Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21502,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module11Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21504,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module11Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21514,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module11Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21522,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module11Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21530,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module11Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21544,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module12Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21600,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module12Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21602,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module12Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21604,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module12Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21614,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module12Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21622,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module12Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21630,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module12Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21644,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module12Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21700,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module12Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21702,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module12Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21704,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module12Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21714,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module12Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21722,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module12Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21730,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module12Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21744,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module13Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21800,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module13Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21802,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module13Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21804,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module13Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21814,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module13Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21822,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module13Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21830,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module13Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21844,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module13Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21900,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module13Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21902,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module13Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21904,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module13Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21914,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module13Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21922,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module13Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21930,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module13Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 21944,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module14Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22000,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module14Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22002,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module14Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22004,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module14Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22014,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module14Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22022,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module14Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22030,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module14Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22044,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module14Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22100,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module14Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22102,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module14Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22104,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module14Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22114,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module14Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22122,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module14Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22130,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module14Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22144,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module15Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22200,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module15Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22202,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module15Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22204,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module15Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22214,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module15Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22222,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module15Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22230,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module15Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22244,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module15Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22300,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module15Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22302,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module15Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22304,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module15Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22314,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module15Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22322,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module15Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22330,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module15Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22344,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module16Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22400,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module16Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22402,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module16Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22404,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module16Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22414,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module16Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22422,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module16Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22430,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module16Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22444,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module16Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22500,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module16Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22502,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module16Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22504,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module16Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22514,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module16Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22522,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module16Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22530,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module16Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22544,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module17Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22600,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module17Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22602,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module17Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22604,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module17Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22614,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module17Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22622,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module17Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22630,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module17Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22644,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module17Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22700,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module17Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22702,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module17Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22704,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module17Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22714,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module17Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22722,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module17Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22730,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module17Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22744,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module18Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22800,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module18Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22802,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module18Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22804,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module18Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22814,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module18Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22822,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module18Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22830,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module18Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22844,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module18Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22900,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module18Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22902,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module18Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22904,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module18Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22914,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module18Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22922,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module18Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22930,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module18Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 22944,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module19Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23000,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module19Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23002,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module19Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23004,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module19Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23014,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module19Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23022,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module19Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23030,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module19Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23044,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module19Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23100,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module19Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23102,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module19Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23104,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module19Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23114,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module19Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23122,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module19Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23130,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module19Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23144,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module20Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23200,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module20Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23202,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module20Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23204,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module20Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23214,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module20Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23222,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module20Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23230,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module20Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23244,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module20Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23300,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module20Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23302,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module20Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23304,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module20Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23314,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module20Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23322,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module20Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23330,
+          "registerCount": 2
+        }
+      },
+      {
+        "metricKey": "module20Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "byteOrder": "BIG_ENDIAN",
+          "register": 23344,
+          "registerCount": 2
+        }
+      }
+    ]
+  },
+  {
+    "id": "janitza-umg801-opcua",
+    "protocol": "OPC_UA",
+    "namespaceUriTemplate": "https://opc.janitza.de/umg801/public",
+    "metrics": [
+      {
+        "metricKey": "voltageL1N",
+        "unit": "V",
+        "addressing": {
+          "nodeIdentifier": 135600
+        }
+      },
+      {
+        "metricKey": "voltageL2N",
+        "unit": "V",
+        "addressing": {
+          "nodeIdentifier": 137600
+        }
+      },
+      {
+        "metricKey": "voltageL3N",
+        "unit": "V",
+        "addressing": {
+          "nodeIdentifier": 139600
+        }
+      },
+      {
+        "metricKey": "currentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 103240
+        }
+      },
+      {
+        "metricKey": "currentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 105240
+        }
+      },
+      {
+        "metricKey": "currentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 107240
+        }
+      },
+      {
+        "metricKey": "activePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 101260
+        }
+      },
+      {
+        "metricKey": "apparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 101380
+        }
+      },
+      {
+        "metricKey": "reactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 101360
+        }
+      },
+      {
+        "metricKey": "powerFactorL1",
+        "unit": "-",
+        "addressing": {
+          "nodeIdentifier": 103360
+        }
+      },
+      {
+        "metricKey": "powerFactorL2",
+        "unit": "-",
+        "addressing": {
+          "nodeIdentifier": 105360
+        }
+      },
+      {
+        "metricKey": "powerFactorL3",
+        "unit": "-",
+        "addressing": {
+          "nodeIdentifier": 107360
+        }
+      },
+      {
+        "metricKey": "frequency",
+        "unit": "Hz",
+        "addressing": {
+          "nodeIdentifier": 131100
+        }
+      },
+      {
+        "metricKey": "activeEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 102505
+        }
+      },
+      {
+        "metricKey": "group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 113240
+        }
+      },
+      {
+        "metricKey": "group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 115240
+        }
+      },
+      {
+        "metricKey": "group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 117240
+        }
+      },
+      {
+        "metricKey": "group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 111260
+        }
+      },
+      {
+        "metricKey": "group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 111380
+        }
+      },
+      {
+        "metricKey": "group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 111360
+        }
+      },
+      {
+        "metricKey": "group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 112505
+        }
+      },
+      {
+        "metricKey": "group3CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 123240
+        }
+      },
+      {
+        "metricKey": "group3CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 125240
+        }
+      },
+      {
+        "metricKey": "group3CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 127240
+        }
+      },
+      {
+        "metricKey": "group3ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 121260
+        }
+      },
+      {
+        "metricKey": "group3ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 121380
+        }
+      },
+      {
+        "metricKey": "group3ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 121360
+        }
+      },
+      {
+        "metricKey": "group3ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 122505
+        }
+      },
+      {
+        "metricKey": "module1Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1007240
+        }
+      },
+      {
+        "metricKey": "module1Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1009240
+        }
+      },
+      {
+        "metricKey": "module1Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1011240
+        }
+      },
+      {
+        "metricKey": "module1Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 1005260
+        }
+      },
+      {
+        "metricKey": "module1Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 1005380
+        }
+      },
+      {
+        "metricKey": "module1Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 1005360
+        }
+      },
+      {
+        "metricKey": "module1Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 1006505
+        }
+      },
+      {
+        "metricKey": "module1Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1017240
+        }
+      },
+      {
+        "metricKey": "module1Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1019240
+        }
+      },
+      {
+        "metricKey": "module1Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1021240
+        }
+      },
+      {
+        "metricKey": "module1Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 1015260
+        }
+      },
+      {
+        "metricKey": "module1Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 1015380
+        }
+      },
+      {
+        "metricKey": "module1Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 1015360
+        }
+      },
+      {
+        "metricKey": "module1Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 1016505
+        }
+      },
+      {
+        "metricKey": "module2Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1107240
+        }
+      },
+      {
+        "metricKey": "module2Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1109240
+        }
+      },
+      {
+        "metricKey": "module2Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1111240
+        }
+      },
+      {
+        "metricKey": "module2Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 1105260
+        }
+      },
+      {
+        "metricKey": "module2Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 1105380
+        }
+      },
+      {
+        "metricKey": "module2Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 1105360
+        }
+      },
+      {
+        "metricKey": "module2Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 1106505
+        }
+      },
+      {
+        "metricKey": "module2Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1117240
+        }
+      },
+      {
+        "metricKey": "module2Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1119240
+        }
+      },
+      {
+        "metricKey": "module2Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1121240
+        }
+      },
+      {
+        "metricKey": "module2Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 1115260
+        }
+      },
+      {
+        "metricKey": "module2Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 1115380
+        }
+      },
+      {
+        "metricKey": "module2Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 1115360
+        }
+      },
+      {
+        "metricKey": "module2Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 1116505
+        }
+      },
+      {
+        "metricKey": "module3Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1207240
+        }
+      },
+      {
+        "metricKey": "module3Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1209240
+        }
+      },
+      {
+        "metricKey": "module3Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1211240
+        }
+      },
+      {
+        "metricKey": "module3Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 1205260
+        }
+      },
+      {
+        "metricKey": "module3Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 1205380
+        }
+      },
+      {
+        "metricKey": "module3Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 1205360
+        }
+      },
+      {
+        "metricKey": "module3Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 1206505
+        }
+      },
+      {
+        "metricKey": "module3Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1217240
+        }
+      },
+      {
+        "metricKey": "module3Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1219240
+        }
+      },
+      {
+        "metricKey": "module3Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1221240
+        }
+      },
+      {
+        "metricKey": "module3Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 1215260
+        }
+      },
+      {
+        "metricKey": "module3Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 1215380
+        }
+      },
+      {
+        "metricKey": "module3Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 1215360
+        }
+      },
+      {
+        "metricKey": "module3Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 1216505
+        }
+      },
+      {
+        "metricKey": "module4Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1307240
+        }
+      },
+      {
+        "metricKey": "module4Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1309240
+        }
+      },
+      {
+        "metricKey": "module4Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1311240
+        }
+      },
+      {
+        "metricKey": "module4Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 1305260
+        }
+      },
+      {
+        "metricKey": "module4Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 1305380
+        }
+      },
+      {
+        "metricKey": "module4Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 1305360
+        }
+      },
+      {
+        "metricKey": "module4Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 1306505
+        }
+      },
+      {
+        "metricKey": "module4Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1317240
+        }
+      },
+      {
+        "metricKey": "module4Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1319240
+        }
+      },
+      {
+        "metricKey": "module4Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1321240
+        }
+      },
+      {
+        "metricKey": "module4Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 1315260
+        }
+      },
+      {
+        "metricKey": "module4Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 1315380
+        }
+      },
+      {
+        "metricKey": "module4Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 1315360
+        }
+      },
+      {
+        "metricKey": "module4Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 1316505
+        }
+      },
+      {
+        "metricKey": "module5Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1407240
+        }
+      },
+      {
+        "metricKey": "module5Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1409240
+        }
+      },
+      {
+        "metricKey": "module5Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1411240
+        }
+      },
+      {
+        "metricKey": "module5Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 1405260
+        }
+      },
+      {
+        "metricKey": "module5Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 1405380
+        }
+      },
+      {
+        "metricKey": "module5Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 1405360
+        }
+      },
+      {
+        "metricKey": "module5Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 1406505
+        }
+      },
+      {
+        "metricKey": "module5Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1417240
+        }
+      },
+      {
+        "metricKey": "module5Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1419240
+        }
+      },
+      {
+        "metricKey": "module5Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1421240
+        }
+      },
+      {
+        "metricKey": "module5Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 1415260
+        }
+      },
+      {
+        "metricKey": "module5Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 1415380
+        }
+      },
+      {
+        "metricKey": "module5Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 1415360
+        }
+      },
+      {
+        "metricKey": "module5Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 1416505
+        }
+      },
+      {
+        "metricKey": "module6Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1507240
+        }
+      },
+      {
+        "metricKey": "module6Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1509240
+        }
+      },
+      {
+        "metricKey": "module6Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1511240
+        }
+      },
+      {
+        "metricKey": "module6Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 1505260
+        }
+      },
+      {
+        "metricKey": "module6Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 1505380
+        }
+      },
+      {
+        "metricKey": "module6Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 1505360
+        }
+      },
+      {
+        "metricKey": "module6Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 1506505
+        }
+      },
+      {
+        "metricKey": "module6Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1517240
+        }
+      },
+      {
+        "metricKey": "module6Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1519240
+        }
+      },
+      {
+        "metricKey": "module6Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1521240
+        }
+      },
+      {
+        "metricKey": "module6Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 1515260
+        }
+      },
+      {
+        "metricKey": "module6Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 1515380
+        }
+      },
+      {
+        "metricKey": "module6Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 1515360
+        }
+      },
+      {
+        "metricKey": "module6Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 1516505
+        }
+      },
+      {
+        "metricKey": "module7Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1607240
+        }
+      },
+      {
+        "metricKey": "module7Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1609240
+        }
+      },
+      {
+        "metricKey": "module7Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1611240
+        }
+      },
+      {
+        "metricKey": "module7Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 1605260
+        }
+      },
+      {
+        "metricKey": "module7Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 1605380
+        }
+      },
+      {
+        "metricKey": "module7Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 1605360
+        }
+      },
+      {
+        "metricKey": "module7Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 1606505
+        }
+      },
+      {
+        "metricKey": "module7Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1617240
+        }
+      },
+      {
+        "metricKey": "module7Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1619240
+        }
+      },
+      {
+        "metricKey": "module7Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1621240
+        }
+      },
+      {
+        "metricKey": "module7Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 1615260
+        }
+      },
+      {
+        "metricKey": "module7Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 1615380
+        }
+      },
+      {
+        "metricKey": "module7Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 1615360
+        }
+      },
+      {
+        "metricKey": "module7Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 1616505
+        }
+      },
+      {
+        "metricKey": "module8Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1707240
+        }
+      },
+      {
+        "metricKey": "module8Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1709240
+        }
+      },
+      {
+        "metricKey": "module8Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1711240
+        }
+      },
+      {
+        "metricKey": "module8Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 1705260
+        }
+      },
+      {
+        "metricKey": "module8Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 1705380
+        }
+      },
+      {
+        "metricKey": "module8Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 1705360
+        }
+      },
+      {
+        "metricKey": "module8Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 1706505
+        }
+      },
+      {
+        "metricKey": "module8Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1717240
+        }
+      },
+      {
+        "metricKey": "module8Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1719240
+        }
+      },
+      {
+        "metricKey": "module8Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1721240
+        }
+      },
+      {
+        "metricKey": "module8Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 1715260
+        }
+      },
+      {
+        "metricKey": "module8Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 1715380
+        }
+      },
+      {
+        "metricKey": "module8Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 1715360
+        }
+      },
+      {
+        "metricKey": "module8Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 1716505
+        }
+      },
+      {
+        "metricKey": "module9Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1807240
+        }
+      },
+      {
+        "metricKey": "module9Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1809240
+        }
+      },
+      {
+        "metricKey": "module9Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1811240
+        }
+      },
+      {
+        "metricKey": "module9Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 1805260
+        }
+      },
+      {
+        "metricKey": "module9Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 1805380
+        }
+      },
+      {
+        "metricKey": "module9Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 1805360
+        }
+      },
+      {
+        "metricKey": "module9Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 1806505
+        }
+      },
+      {
+        "metricKey": "module9Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1817240
+        }
+      },
+      {
+        "metricKey": "module9Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1819240
+        }
+      },
+      {
+        "metricKey": "module9Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1821240
+        }
+      },
+      {
+        "metricKey": "module9Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 1815260
+        }
+      },
+      {
+        "metricKey": "module9Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 1815380
+        }
+      },
+      {
+        "metricKey": "module9Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 1815360
+        }
+      },
+      {
+        "metricKey": "module9Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 1816505
+        }
+      },
+      {
+        "metricKey": "module10Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1907240
+        }
+      },
+      {
+        "metricKey": "module10Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1909240
+        }
+      },
+      {
+        "metricKey": "module10Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1911240
+        }
+      },
+      {
+        "metricKey": "module10Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 1905260
+        }
+      },
+      {
+        "metricKey": "module10Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 1905380
+        }
+      },
+      {
+        "metricKey": "module10Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 1905360
+        }
+      },
+      {
+        "metricKey": "module10Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 1906505
+        }
+      },
+      {
+        "metricKey": "module10Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1917240
+        }
+      },
+      {
+        "metricKey": "module10Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1919240
+        }
+      },
+      {
+        "metricKey": "module10Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 1921240
+        }
+      },
+      {
+        "metricKey": "module10Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 1915260
+        }
+      },
+      {
+        "metricKey": "module10Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 1915380
+        }
+      },
+      {
+        "metricKey": "module10Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 1915360
+        }
+      },
+      {
+        "metricKey": "module10Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 1916505
+        }
+      },
+      {
+        "metricKey": "module11Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2007240
+        }
+      },
+      {
+        "metricKey": "module11Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2009240
+        }
+      },
+      {
+        "metricKey": "module11Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2011240
+        }
+      },
+      {
+        "metricKey": "module11Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 2005260
+        }
+      },
+      {
+        "metricKey": "module11Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 2005380
+        }
+      },
+      {
+        "metricKey": "module11Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 2005360
+        }
+      },
+      {
+        "metricKey": "module11Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 2006505
+        }
+      },
+      {
+        "metricKey": "module11Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2017240
+        }
+      },
+      {
+        "metricKey": "module11Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2019240
+        }
+      },
+      {
+        "metricKey": "module11Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2021240
+        }
+      },
+      {
+        "metricKey": "module11Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 2015260
+        }
+      },
+      {
+        "metricKey": "module11Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 2015380
+        }
+      },
+      {
+        "metricKey": "module11Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 2015360
+        }
+      },
+      {
+        "metricKey": "module11Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 2016505
+        }
+      },
+      {
+        "metricKey": "module12Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2107240
+        }
+      },
+      {
+        "metricKey": "module12Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2109240
+        }
+      },
+      {
+        "metricKey": "module12Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2111240
+        }
+      },
+      {
+        "metricKey": "module12Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 2105260
+        }
+      },
+      {
+        "metricKey": "module12Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 2105380
+        }
+      },
+      {
+        "metricKey": "module12Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 2105360
+        }
+      },
+      {
+        "metricKey": "module12Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 2106505
+        }
+      },
+      {
+        "metricKey": "module12Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2117240
+        }
+      },
+      {
+        "metricKey": "module12Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2119240
+        }
+      },
+      {
+        "metricKey": "module12Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2121240
+        }
+      },
+      {
+        "metricKey": "module12Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 2115260
+        }
+      },
+      {
+        "metricKey": "module12Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 2115380
+        }
+      },
+      {
+        "metricKey": "module12Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 2115360
+        }
+      },
+      {
+        "metricKey": "module12Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 2116505
+        }
+      },
+      {
+        "metricKey": "module13Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2207240
+        }
+      },
+      {
+        "metricKey": "module13Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2209240
+        }
+      },
+      {
+        "metricKey": "module13Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2211240
+        }
+      },
+      {
+        "metricKey": "module13Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 2205260
+        }
+      },
+      {
+        "metricKey": "module13Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 2205380
+        }
+      },
+      {
+        "metricKey": "module13Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 2205360
+        }
+      },
+      {
+        "metricKey": "module13Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 2206505
+        }
+      },
+      {
+        "metricKey": "module13Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2217240
+        }
+      },
+      {
+        "metricKey": "module13Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2219240
+        }
+      },
+      {
+        "metricKey": "module13Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2221240
+        }
+      },
+      {
+        "metricKey": "module13Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 2215260
+        }
+      },
+      {
+        "metricKey": "module13Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 2215380
+        }
+      },
+      {
+        "metricKey": "module13Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 2215360
+        }
+      },
+      {
+        "metricKey": "module13Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 2216505
+        }
+      },
+      {
+        "metricKey": "module14Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2307240
+        }
+      },
+      {
+        "metricKey": "module14Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2309240
+        }
+      },
+      {
+        "metricKey": "module14Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2311240
+        }
+      },
+      {
+        "metricKey": "module14Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 2305260
+        }
+      },
+      {
+        "metricKey": "module14Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 2305380
+        }
+      },
+      {
+        "metricKey": "module14Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 2305360
+        }
+      },
+      {
+        "metricKey": "module14Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 2306505
+        }
+      },
+      {
+        "metricKey": "module14Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2317240
+        }
+      },
+      {
+        "metricKey": "module14Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2319240
+        }
+      },
+      {
+        "metricKey": "module14Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2321240
+        }
+      },
+      {
+        "metricKey": "module14Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 2315260
+        }
+      },
+      {
+        "metricKey": "module14Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 2315380
+        }
+      },
+      {
+        "metricKey": "module14Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 2315360
+        }
+      },
+      {
+        "metricKey": "module14Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 2316505
+        }
+      },
+      {
+        "metricKey": "module15Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2407240
+        }
+      },
+      {
+        "metricKey": "module15Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2409240
+        }
+      },
+      {
+        "metricKey": "module15Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2411240
+        }
+      },
+      {
+        "metricKey": "module15Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 2405260
+        }
+      },
+      {
+        "metricKey": "module15Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 2405380
+        }
+      },
+      {
+        "metricKey": "module15Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 2405360
+        }
+      },
+      {
+        "metricKey": "module15Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 2406505
+        }
+      },
+      {
+        "metricKey": "module15Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2417240
+        }
+      },
+      {
+        "metricKey": "module15Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2419240
+        }
+      },
+      {
+        "metricKey": "module15Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2421240
+        }
+      },
+      {
+        "metricKey": "module15Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 2415260
+        }
+      },
+      {
+        "metricKey": "module15Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 2415380
+        }
+      },
+      {
+        "metricKey": "module15Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 2415360
+        }
+      },
+      {
+        "metricKey": "module15Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 2416505
+        }
+      },
+      {
+        "metricKey": "module16Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2507240
+        }
+      },
+      {
+        "metricKey": "module16Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2509240
+        }
+      },
+      {
+        "metricKey": "module16Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2511240
+        }
+      },
+      {
+        "metricKey": "module16Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 2505260
+        }
+      },
+      {
+        "metricKey": "module16Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 2505380
+        }
+      },
+      {
+        "metricKey": "module16Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 2505360
+        }
+      },
+      {
+        "metricKey": "module16Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 2506505
+        }
+      },
+      {
+        "metricKey": "module16Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2517240
+        }
+      },
+      {
+        "metricKey": "module16Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2519240
+        }
+      },
+      {
+        "metricKey": "module16Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2521240
+        }
+      },
+      {
+        "metricKey": "module16Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 2515260
+        }
+      },
+      {
+        "metricKey": "module16Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 2515380
+        }
+      },
+      {
+        "metricKey": "module16Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 2515360
+        }
+      },
+      {
+        "metricKey": "module16Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 2516505
+        }
+      },
+      {
+        "metricKey": "module17Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2607240
+        }
+      },
+      {
+        "metricKey": "module17Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2609240
+        }
+      },
+      {
+        "metricKey": "module17Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2611240
+        }
+      },
+      {
+        "metricKey": "module17Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 2605260
+        }
+      },
+      {
+        "metricKey": "module17Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 2605380
+        }
+      },
+      {
+        "metricKey": "module17Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 2605360
+        }
+      },
+      {
+        "metricKey": "module17Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 2606505
+        }
+      },
+      {
+        "metricKey": "module17Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2617240
+        }
+      },
+      {
+        "metricKey": "module17Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2619240
+        }
+      },
+      {
+        "metricKey": "module17Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2621240
+        }
+      },
+      {
+        "metricKey": "module17Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 2615260
+        }
+      },
+      {
+        "metricKey": "module17Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 2615380
+        }
+      },
+      {
+        "metricKey": "module17Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 2615360
+        }
+      },
+      {
+        "metricKey": "module17Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 2616505
+        }
+      },
+      {
+        "metricKey": "module18Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2707240
+        }
+      },
+      {
+        "metricKey": "module18Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2709240
+        }
+      },
+      {
+        "metricKey": "module18Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2711240
+        }
+      },
+      {
+        "metricKey": "module18Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 2705260
+        }
+      },
+      {
+        "metricKey": "module18Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 2705380
+        }
+      },
+      {
+        "metricKey": "module18Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 2705360
+        }
+      },
+      {
+        "metricKey": "module18Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 2706505
+        }
+      },
+      {
+        "metricKey": "module18Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2717240
+        }
+      },
+      {
+        "metricKey": "module18Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2719240
+        }
+      },
+      {
+        "metricKey": "module18Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2721240
+        }
+      },
+      {
+        "metricKey": "module18Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 2715260
+        }
+      },
+      {
+        "metricKey": "module18Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 2715380
+        }
+      },
+      {
+        "metricKey": "module18Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 2715360
+        }
+      },
+      {
+        "metricKey": "module18Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 2716505
+        }
+      },
+      {
+        "metricKey": "module19Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2807240
+        }
+      },
+      {
+        "metricKey": "module19Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2809240
+        }
+      },
+      {
+        "metricKey": "module19Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2811240
+        }
+      },
+      {
+        "metricKey": "module19Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 2805260
+        }
+      },
+      {
+        "metricKey": "module19Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 2805380
+        }
+      },
+      {
+        "metricKey": "module19Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 2805360
+        }
+      },
+      {
+        "metricKey": "module19Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 2806505
+        }
+      },
+      {
+        "metricKey": "module19Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2817240
+        }
+      },
+      {
+        "metricKey": "module19Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2819240
+        }
+      },
+      {
+        "metricKey": "module19Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2821240
+        }
+      },
+      {
+        "metricKey": "module19Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 2815260
+        }
+      },
+      {
+        "metricKey": "module19Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 2815380
+        }
+      },
+      {
+        "metricKey": "module19Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 2815360
+        }
+      },
+      {
+        "metricKey": "module19Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 2816505
+        }
+      },
+      {
+        "metricKey": "module20Group1CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2907240
+        }
+      },
+      {
+        "metricKey": "module20Group1CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2909240
+        }
+      },
+      {
+        "metricKey": "module20Group1CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2911240
+        }
+      },
+      {
+        "metricKey": "module20Group1ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 2905260
+        }
+      },
+      {
+        "metricKey": "module20Group1ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 2905380
+        }
+      },
+      {
+        "metricKey": "module20Group1ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 2905360
+        }
+      },
+      {
+        "metricKey": "module20Group1ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 2906505
+        }
+      },
+      {
+        "metricKey": "module20Group2CurrentL1",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2917240
+        }
+      },
+      {
+        "metricKey": "module20Group2CurrentL2",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2919240
+        }
+      },
+      {
+        "metricKey": "module20Group2CurrentL3",
+        "unit": "A",
+        "addressing": {
+          "nodeIdentifier": 2921240
+        }
+      },
+      {
+        "metricKey": "module20Group2ActivePowerSum",
+        "unit": "W",
+        "addressing": {
+          "nodeIdentifier": 2915260
+        }
+      },
+      {
+        "metricKey": "module20Group2ApparentPowerSum",
+        "unit": "VA",
+        "addressing": {
+          "nodeIdentifier": 2915380
+        }
+      },
+      {
+        "metricKey": "module20Group2ReactivePowerSum",
+        "unit": "var",
+        "addressing": {
+          "nodeIdentifier": 2915360
+        }
+      },
+      {
+        "metricKey": "module20Group2ActiveEnergySum",
+        "unit": "Wh",
+        "addressing": {
+          "nodeIdentifier": 2916505
+        }
+      }
+    ]
+  },
+  {
+    "id": "keyence-fd-g-modbus-tcp",
+    "protocol": "MODBUS_TCP",
+    "metrics": [
+      {
+        "metricKey": "volumetricFlowRate",
+        "unit": "m³/h",
+        "addressing": {
+          "byteOrder": "WORD_SWAPPED",
+          "format": "INT32",
+          "register": 4,
+          "registerCount": 2,
+          "resolutionRegister": 25
+        }
+      }
+    ]
+  }
+]

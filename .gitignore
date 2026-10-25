@@ -1,0 +1,31 @@
+node_modules/
+dist/
+coverage/
+
+# generated CycloneDX SBOM (npm run sbom) - regenerate on demand/at release,
+# not meant to be committed, same convention as coverage/
+/sbom.cdx.json
+
+# real per-instance configs (secrets) - only the example*.json files below
+# are committed
+config/instances/*.json
+!config/instances/example.instance.json
+!config/instances/example-bridge.instance.json
+
+# control-plane's local instance/settings store (created at runtime)
+data/instances.json
+data/settings.json
+
+# per-instance ReadingBuffer persistence, survives a process restart
+# (created at runtime, see gateway/reading-buffer-store.ts)
+data/reading-buffers/
+
+# pre-upgrade copies of the whole data/ directory (docs/deployment.md tells
+# operators to put these outside the repo, but the safety net belongs here
+# too): such a copy contains settings.json, i.e. the ferrion API key in
+# plaintext, and `git add -A` in a hurry would write it into the history of
+# a repo that goes to GitHub.
+/data-backup-*/
+
+.env
+*.log

@@ -1,0 +1,136 @@
+name: Release
+
+# R01, stage 1: a tag vX.Y.Z builds the gateway image here instead of on
+# the VM, signs it, attaches the SBOM and keeps the last five versions
+# (decisions 2026-10-25, asset-manager docs/roadmap/DECISIONS.md). Releases
+# are collected, about once a month (same decision).
+#
+# Signed keyless with Sigstore: the workflow proves its own identity through
+# GitHub's OIDC token, so there is no key to keep, rotate or lose. The price,
+# decided knowingly: the public transparency log names this repository and
+# the time of each release (only digest and workflow identity, no code).
+#
+# Only on tags and by hand, never on pull requests: Actions minutes are
+# scarce, and a release is a deliberate act.
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing tag to release, e.g. v0.1.1120"
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  IMAGE: ghcr.io/${{ github.repository }}
+  TAG: ${{ inputs.tag || github.ref_name }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # the GitHub release with its notes
+      packages: write # push to and prune ghcr.io
+      id-token: write # Sigstore keyless signing
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ env.TAG }}
+          fetch-depth: 0
+
+      # The tag names the version the image reports (package.json, raised by
+      # the pre-commit hook). A tag on the wrong commit would ship an image
+      # whose "about" page says something else; refused here. A suffix such
+      # as -rc.1 is allowed for a trial run.
+      - name: Tag matches package.json
+        shell: bash
+        run: |
+          version=$(node -p "require('./package.json').version")
+          case "$TAG" in
+            "v$version"|"v$version"-*) echo "release $TAG of $version" ;;
+            *) echo "::error::Tag $TAG does not match package.json version $version"; exit 1 ;;
+          esac
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # provenance/sbom off: buildx would otherwise wrap the image in an index
+      # with attestation manifests of its own - more untagged versions in the
+      # registry, and a digest that is not the image. The SBOM is attached
+      # by cosign below instead, from the same package-lock.json.
+      - name: Build and push
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          provenance: false
+          sbom: false
+          tags: ${{ env.IMAGE }}:${{ env.TAG }}
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.version=${{ env.TAG }}
+            org.opencontainers.image.revision=${{ github.sha }}
+          # No layer cache: measured on the first run (25.10., 12.7 min), its
+          # export alone took 5.5 min for about 3 GB - more than any rebuild
+          # it could save. A fresh build takes about 6 min.
+
+      - uses: sigstore/cosign-installer@v3
+
+      - name: Sign
+        run: cosign sign --yes "${IMAGE}@${{ steps.build.outputs.digest }}"
+
+      - name: SBOM as attestation
+        run: |
+          npm run sbom
+          cosign attest --yes --type cyclonedx --predicate sbom.cdx.json "${IMAGE}@${{ steps.build.outputs.digest }}"
+
+      # Release notes from the pull requests since the previous tag; the
+      # SBOM and the digest ride along, so the VM handover can name exactly
+      # what to pull. The very first release has no previous tag - GitHub
+      # would list every pull request since the repository began (found on
+      # the first run, back to #14) - so it gets the head lines only.
+      - name: GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          prerelease=""
+          case "$TAG" in *-*) prerelease="--prerelease" ;; esac
+          digest="${{ steps.build.outputs.digest }}"
+          tick='`'
+          {
+            echo "Image: ${tick}${IMAGE}@${digest}${tick}"
+            echo
+            echo "Check on the VM: ${tick}scripts/vm-release-pull.sh ${TAG}${tick}"
+          } > notes-head.md
+          generated=()
+          if previous=$(git describe --tags --abbrev=0 --match 'v*' "${TAG}^" 2>/dev/null); then
+            generated=(--generate-notes --notes-start-tag "$previous")
+          fi
+          gh release create "$TAG" --verify-tag "${generated[@]}" --notes-file notes-head.md $prerelease sbom.cdx.json
+
+      # Keep the newest five released images (decision 2026-10-25), with the
+      # signature and attestation cosign stored beside each (tags
+      # sha256-<digest>.sig/.att). Trial releases (-rc) are pruned the same
+      # way. Untagged leftovers of earlier pushes go too.
+      - name: Prune old versions
+        env:
+          GH_TOKEN: ${{ github.token }}
+          KEEP: "5"
+        shell: bash
+        run: bash scripts/ghcr-prune.sh "${GITHUB_REPOSITORY#*/}"

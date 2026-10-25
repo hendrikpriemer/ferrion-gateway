@@ -1,0 +1,29 @@
+name: Bug report
+description: Something does not work as documented
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Shown in the web UI under "About", or the release tag / commit.
+    validations:
+      required: true
+  - type: dropdown
+    id: protocol
+    attributes:
+      label: Protocol involved
+      options: [OPC UA, Modbus TCP, MQTT, None / not sure]
+  - type: textarea
+    id: logs
+    attributes:
+      label: Log lines
+      description: The relevant lines (`docker compose logs --no-log-prefix ferrion-gateway`). Remove addresses, names or keys you do not want public.
+      render: text

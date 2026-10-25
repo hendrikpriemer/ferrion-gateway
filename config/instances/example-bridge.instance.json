@@ -1,0 +1,15 @@
+{
+  "instanceName": "bridge-1",
+  "ferrion": {
+    "baseUrl": "https://localhost:3000",
+    "apiKey": "gw_paste-your-real-key-here",
+    "rejectUnauthorized": false
+  },
+  "polling": {
+    "commandsIntervalMs": 3000,
+    "dataSourcesIntervalMs": 15000,
+    "readingIntervalMs": 5000,
+    "readingsPushIntervalMs": 5000
+  },
+  "logLevel": "info"
+}

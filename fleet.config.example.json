@@ -1,0 +1,27 @@
+{
+  "ferrion": {
+    "baseUrl": "https://localhost:3000",
+    "rejectUnauthorized": false
+  },
+  "instances": [
+    {
+      "instanceName": "af2-opcua-1",
+      "apiKeyEnvVar": "FG_KEY_AF2_OPCUA_1",
+      "device": { "templateId": "aventics-af2-opcua", "serialNumber": "10000456" }
+    },
+    {
+      "instanceName": "af2-mqtt-1",
+      "apiKeyEnvVar": "FG_KEY_AF2_MQTT_1",
+      "device": { "templateId": "aventics-af2-mqtt", "serialNumber": "22483011" }
+    },
+    {
+      "instanceName": "ds1-modbus-1",
+      "apiKeyEnvVar": "FG_KEY_DS1_MODBUS_1",
+      "device": { "templateId": "aventics-ds1-modbus-tcp", "serialNumber": "1" }
+    },
+    {
+      "instanceName": "bridge-1",
+      "apiKeyEnvVar": "FG_KEY_BRIDGE_1"
+    }
+  ]
+}

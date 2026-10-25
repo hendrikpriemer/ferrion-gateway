@@ -1,0 +1,379 @@
+{
+    "D0": {
+        "IG1": {
+            "C1": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 200.0,
+                    "sec": 1.0
+                }
+            },
+            "C2": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 200.0,
+                    "sec": 1.0
+                }
+            },
+            "C3": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 200.0,
+                    "sec": 1.0
+                }
+            },
+            "C4": {
+                "mode": "basicIndependent",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 200.0,
+                    "sec": 1.0
+                }
+            },
+            "id": 1,
+            "name": "Kompressor ND1",
+            "type": "system"
+        },
+        "IG2": {
+            "C1": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 200.0,
+                    "sec": 1.0
+                }
+            },
+            "C2": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 200.0,
+                    "sec": 1.0
+                }
+            },
+            "C3": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 200.0,
+                    "sec": 1.0
+                }
+            },
+            "C4": {
+                "mode": "basicIndependent",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 200.0,
+                    "sec": 1.0
+                }
+            },
+            "id": 2,
+            "name": "Kompressor ND3",
+            "type": "system"
+        },
+        "IG3": {
+            "C1": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "C2": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "C3": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "C4": {
+                "mode": "basicIndependent",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "id": 3,
+            "name": "",
+            "type": "system"
+        }
+    },
+    "D1": {
+        "IG1": {
+            "C1": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "C2": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "C3": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "C4": {
+                "mode": "basicIndependent",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "id": 1,
+            "name": "N/A",
+            "type": "system"
+        },
+        "IG2": {
+            "C1": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "C2": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "C3": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "C4": {
+                "mode": "basicIndependent",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "id": 2,
+            "name": "Kompressor HD1",
+            "type": "system"
+        }
+    },
+    "D2": {
+        "IG1": {
+            "C1": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 200.0,
+                    "sec": 1.0
+                }
+            },
+            "C2": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 200.0,
+                    "sec": 1.0
+                }
+            },
+            "C3": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 200.0,
+                    "sec": 1.0
+                }
+            },
+            "C4": {
+                "mode": "basicIndependent",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 200.0,
+                    "sec": 1.0
+                }
+            },
+            "id": 1,
+            "name": "Kompressor ND2",
+            "type": "system"
+        },
+        "IG2": {
+            "C1": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "C2": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "C3": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "C4": {
+                "mode": "basicIndependent",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "id": 2,
+            "name": "Kompressor HD2",
+            "type": "system"
+        }
+    },
+    "D3": {
+        "IG1": {
+            "C1": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "C2": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "C3": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "C4": {
+                "mode": "basicIndependent",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "id": 1,
+            "name": "Trockner 2 rechts",
+            "type": "system"
+        },
+        "IG2": {
+            "C1": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "C2": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "C3": {
+                "mode": "basicSystem",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "C4": {
+                "mode": "basicIndependent",
+                "name": "",
+                "nominal": 5.0,
+                "transformer": {
+                    "prim": 100.0,
+                    "sec": 1.0
+                }
+            },
+            "id": 2,
+            "name": "Trockner 1 links",
+            "type": "system"
+        }
+    }
+}

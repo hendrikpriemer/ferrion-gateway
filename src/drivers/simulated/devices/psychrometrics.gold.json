@@ -1,0 +1,56 @@
+[
+  {
+    "temperatureC": 20,
+    "dewPointC": 10,
+    "pressureHpa": 1013.25,
+    "saturationVapourPressureHpa": 23.32596022097807,
+    "dewPointFromVapourPressure": 20,
+    "moistureContentGramsPerKg": 7.618367995243081,
+    "relativeHumidityPercent": 52.56076036802631
+  },
+  {
+    "temperatureC": 35,
+    "dewPointC": 3,
+    "pressureHpa": 8000,
+    "saturationVapourPressureHpa": 56.128417194210776,
+    "dewPointFromVapourPressure": 35,
+    "moistureContentGramsPerKg": 0.5896171174292617,
+    "relativeHumidityPercent": 13.498185777330871
+  },
+  {
+    "temperatureC": 5,
+    "dewPointC": -25,
+    "pressureHpa": 8000,
+    "saturationVapourPressureHpa": 8.717427467687937,
+    "dewPointFromVapourPressure": 5.000000000000002,
+    "moistureContentGramsPerKg": 0.06307493542716142,
+    "relativeHumidityPercent": 9.305164094051307
+  },
+  {
+    "temperatureC": 25,
+    "dewPointC": 25,
+    "pressureHpa": 1013.25,
+    "saturationVapourPressureHpa": 31.600569164883332,
+    "dewPointFromVapourPressure": 24.999999999999996,
+    "moistureContentGramsPerKg": 20.022987232657897,
+    "relativeHumidityPercent": 100
+  },
+  {
+    "temperatureC": -10,
+    "dewPointC": -40,
+    "pressureHpa": 7000,
+    "saturationVapourPressureHpa": 2.870310312013222,
+    "dewPointFromVapourPressure": -10,
+    "moistureContentGramsPerKg": 0.01690215521802686,
+    "relativeHumidityPercent": 6.626879724997275
+  },
+  {
+    "temperatureC": 50,
+    "dewPointC": 15,
+    "pressureHpa": 9000,
+    "saturationVapourPressureHpa": 123.45158192793637,
+    "dewPointFromVapourPressure": 49.99999999999999,
+    "moistureContentGramsPerKg": 1.1782722576694329,
+    "relativeHumidityPercent": 13.784124897262476
+  }
+]
