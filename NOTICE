@@ -170,8 +170,8 @@ SOFTWARE.
 
 ------------------------------------------------------------------------
 
-@peculiar/asn1-asym-key@2.11.0 (MIT)
-@peculiar/asn1-x509-post-quantum@2.11.0 (MIT)
+@peculiar/asn1-asym-key@2.11.1 (MIT)
+@peculiar/asn1-x509-post-quantum@2.11.1 (MIT)
 
 MIT License
 
@@ -197,15 +197,15 @@ SOFTWARE.
 
 ------------------------------------------------------------------------
 
-@peculiar/asn1-cms@2.11.0 (MIT)
-@peculiar/asn1-csr@2.11.0 (MIT)
-@peculiar/asn1-ecc@2.11.0 (MIT)
-@peculiar/asn1-pfx@2.11.0 (MIT)
-@peculiar/asn1-pkcs8@2.11.0 (MIT)
-@peculiar/asn1-rsa@2.11.0 (MIT)
-@peculiar/asn1-schema@2.11.0 (MIT)
-@peculiar/asn1-x509@2.11.0 (MIT)
-@peculiar/asn1-x509-attr@2.11.0 (MIT)
+@peculiar/asn1-cms@2.11.1 (MIT)
+@peculiar/asn1-csr@2.11.1 (MIT)
+@peculiar/asn1-ecc@2.11.1 (MIT)
+@peculiar/asn1-pfx@2.11.1 (MIT)
+@peculiar/asn1-pkcs8@2.11.1 (MIT)
+@peculiar/asn1-rsa@2.11.1 (MIT)
+@peculiar/asn1-schema@2.11.1 (MIT)
+@peculiar/asn1-x509@2.11.1 (MIT)
+@peculiar/asn1-x509-attr@2.11.1 (MIT)
 
 MIT License
 
@@ -231,7 +231,7 @@ SOFTWARE.
 
 ------------------------------------------------------------------------
 
-@peculiar/asn1-pkcs9@2.11.0 (MIT)
+@peculiar/asn1-pkcs9@2.11.1 (MIT)
 
 MIT License
 
@@ -2000,7 +2000,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 ------------------------------------------------------------------------
 
-mqtt@5.16.0 (MIT)
+mqtt@5.16.1 (MIT)
 
 The MIT License (MIT)
 =====================
@@ -2130,22 +2130,22 @@ THE SOFTWARE.
 
 ------------------------------------------------------------------------
 
-node-opcua@2.187.9 (MIT)
-node-opcua-address-space@2.187.9 (MIT)
-node-opcua-address-space-base@2.187.9 (MIT)
-node-opcua-address-space-for-conformance-testing@2.187.9 (MIT)
-node-opcua-address-space-store@2.187.9 (MIT)
-node-opcua-aggregates@2.187.9 (MIT)
-node-opcua-alarm-condition@2.187.9 (MIT)
+node-opcua@2.187.16 (MIT)
+node-opcua-address-space@2.187.16 (MIT)
+node-opcua-address-space-base@2.187.14 (MIT)
+node-opcua-address-space-for-conformance-testing@2.187.16 (MIT)
+node-opcua-address-space-store@2.187.14 (MIT)
+node-opcua-aggregates@2.187.16 (MIT)
+node-opcua-alarm-condition@2.187.16 (MIT)
 node-opcua-assert@2.186.7 (MIT)
 node-opcua-basic-types@2.187.0 (MIT)
 node-opcua-binary-stream@2.187.0 (MIT)
 node-opcua-buffer-utils@2.187.0 (MIT)
-node-opcua-certificate-manager@2.187.9 (MIT)
+node-opcua-certificate-manager@2.187.16 (MIT)
 node-opcua-chunkmanager@2.187.8 (MIT)
-node-opcua-client@2.187.9 (MIT)
-node-opcua-client-dynamic-extension-object@2.187.9 (MIT)
-node-opcua-client-proxy@2.187.9 (MIT)
+node-opcua-client@2.187.16 (MIT)
+node-opcua-client-dynamic-extension-object@2.187.16 (MIT)
+node-opcua-client-proxy@2.187.16 (MIT)
 node-opcua-common@2.187.9 (MIT)
 node-opcua-constants@2.185.0 (MIT)
 node-opcua-data-access@2.187.9 (MIT)
@@ -2158,24 +2158,24 @@ node-opcua-extension-object@2.187.0 (MIT)
 node-opcua-factory@2.187.0 (MIT)
 node-opcua-guid@2.184.0 (MIT)
 node-opcua-hostname@2.187.6 (MIT)
-node-opcua-json@2.187.9 (MIT)
+node-opcua-json@2.187.16 (MIT)
 node-opcua-nodeid@2.187.0 (MIT)
-node-opcua-nodeset-ua@2.187.9 (MIT)
+node-opcua-nodeset-ua@2.187.14 (MIT)
 node-opcua-nodesets@2.187.4 (MIT)
 node-opcua-numeric-range@2.187.0 (MIT)
 node-opcua-object-registry@2.186.7 (MIT)
 node-opcua-packet-analyzer@2.187.0 (MIT)
 node-opcua-packet-assembler@2.187.0 (MIT)
-node-opcua-pseudo-session@2.187.9 (MIT)
+node-opcua-pseudo-session@2.187.16 (MIT)
 node-opcua-schemas@2.187.0 (MIT)
-node-opcua-secure-channel@2.187.9 (MIT)
-node-opcua-server@2.187.9 (MIT)
-node-opcua-server-discovery@2.187.9 (MIT)
+node-opcua-secure-channel@2.187.16 (MIT)
+node-opcua-server@2.187.16 (MIT)
+node-opcua-server-discovery@2.187.16 (MIT)
 node-opcua-service-browse@2.187.9 (MIT)
 node-opcua-service-call@2.187.9 (MIT)
 node-opcua-service-discovery@2.187.9 (MIT)
 node-opcua-service-endpoints@2.187.9 (MIT)
-node-opcua-service-filter@2.187.9 (MIT)
+node-opcua-service-filter@2.187.14 (MIT)
 node-opcua-service-history@2.187.9 (MIT)
 node-opcua-service-node-management@2.187.9 (MIT)
 node-opcua-service-query@2.187.9 (MIT)
@@ -2183,16 +2183,16 @@ node-opcua-service-read@2.187.9 (MIT)
 node-opcua-service-register-node@2.187.9 (MIT)
 node-opcua-service-secure-channel@2.187.9 (MIT)
 node-opcua-service-session@2.187.9 (MIT)
-node-opcua-service-subscription@2.187.9 (MIT)
+node-opcua-service-subscription@2.187.16 (MIT)
 node-opcua-service-translate-browse-path@2.187.9 (MIT)
 node-opcua-service-write@2.187.9 (MIT)
 node-opcua-status-code@2.187.0 (MIT)
 node-opcua-transport@2.187.8 (MIT)
 node-opcua-types@2.187.9 (MIT)
-node-opcua-uanodeset-json@2.187.9 (MIT)
+node-opcua-uanodeset-json@2.187.16 (MIT)
 node-opcua-utils@2.187.0 (MIT)
 node-opcua-variant@2.187.0 (MIT)
-node-opcua-vendor-diagnostic@2.187.9 (MIT)
+node-opcua-vendor-diagnostic@2.187.16 (MIT)
 node-opcua-xml2json@2.187.0 (MIT)
 
 The MIT License (MIT)
@@ -2247,7 +2247,7 @@ SOFTWARE.
 
 ------------------------------------------------------------------------
 
-node-opcua-pki@7.1.2 (MIT)
+node-opcua-pki@7.1.4 (MIT)
 
 The MIT License (MIT)
 

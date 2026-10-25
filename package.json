@@ -1,6 +1,6 @@
 {
   "name": "ferrion-gateway",
-  "version": "0.1.61",
+  "version": "0.1.62",
   "license": "Apache-2.0",
   "private": true,
   "type": "module",
@@ -25,8 +25,8 @@
     "aedes": "^1.2.0",
     "material-symbols": "0.48.0",
     "modbus-serial": "^8.0.25",
-    "mqtt": "^5.16.0",
-    "node-opcua": "^2.187.9",
+    "mqtt": "^5.16.1",
+    "node-opcua": "^2.187.16",
     "pino": "^10.4.0",
     "tsx": "^4.20.6",
     "undici": "^8.12.3",
@@ -35,11 +35,11 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/node": "^22.20.2",
-    "eslint": "^10.12.0",
+    "eslint": "^10.13.0",
     "globals": "^17.12.0",
     "pino-pretty": "^13.2.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.71.2",
-    "vitest": "^5.0.3"
+    "vitest": "^5.0.5"
   }
 }
