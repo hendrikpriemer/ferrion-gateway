@@ -96,7 +96,7 @@ describe("handleTestConnection (Modbus TCP) against a device that accepts only o
   });
 });
 
-describe("handleTestConnection reports an OPC UA device's firmware (asset-manager#902)", () => {
+describe("handleTestConnection reports an OPC UA device's firmware (ferrion#902)", () => {
   // Janitza renumbered the UMG 801's node ids between firmware 1.5.x and
   // 1.6.x; ferrion refuses an older device with this version.
   const OPCUA_PORT = 24851;

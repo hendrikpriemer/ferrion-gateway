@@ -391,7 +391,7 @@ describe("ReadingLoop.getTrackedSensors", () => {
     }
   });
 
-  it("reports a node the device does not know as its own status, and logs it once instead of on every retry (asset-manager#902)", async () => {
+  it("reports a node the device does not know as its own status, and logs it once instead of on every retry (ferrion#902)", async () => {
     vi.useFakeTimers();
     try {
       const logger = fakeLogger();

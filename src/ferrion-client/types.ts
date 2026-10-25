@@ -1,5 +1,5 @@
 // Mirrors ferrion's own gateway-facing API contract exactly
-// (~/asset-manager/src/app/api/gateway/**) - see that repo's
+// (ferrion's src/app/api/gateway/**) - see that repo's
 // prisma/schema.prisma for GatewayCommandType/DataSourceProtocol and
 // src/lib/known-device-templates.ts for how connectionConfig is built.
 

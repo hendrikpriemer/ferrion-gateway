@@ -1,4 +1,4 @@
-// Flat config, same shape as the platform repo (asset-manager) minus the
+// Flat config, same shape as the platform repo (ferrion) minus the
 // Next/React parts this plain Node service has no use for. Type-aware
 // rules on: the findings that matter here (unbound methods, unsafe any,
 // floating promises) only exist with type information.

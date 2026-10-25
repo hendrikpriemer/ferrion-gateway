@@ -72,7 +72,7 @@ async function testOpcuaConnection(payload: CommandPayload): Promise<{ discovere
   try {
     await client.testConnection();
     // Like the module probe below, an extra that must never fail the test:
-    // ferrion refuses a UMG 801 older than 1.6 with it (asset-manager#902),
+    // ferrion refuses a UMG 801 older than 1.6 with it (ferrion#902),
     // and says so when the device does not tell.
     const softwareVersion = await client.readSoftwareVersion().catch(() => null);
     const version = softwareVersion ? { softwareVersion } : {};

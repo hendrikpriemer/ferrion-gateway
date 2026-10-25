@@ -4,7 +4,7 @@
 # devDependencies, for exactly this reason) and copies the source.
 # Node 22 (Active LTS): Node 20 has had no security fixes since
 # 2026-04-30, and a CRA-covered product cannot ship an EOL runtime. 22
-# rather than 24 to match the platform (asset-manager: engines >=22.13).
+# rather than 24 to match the platform (ferrion: engines >=22.13).
 # Only native addon in the production tree is @serialport/bindings-cpp
 # (N-API, musl prebuilds), so the major bump is ABI-safe (review 2026-09,
 # H-5).
@@ -19,7 +19,7 @@ COPY package.json package-lock.json ./
 # scripts/ isn't even copied in yet at this point, so it'd fail outright:
 # confirmed live, "Cannot find module '/app/scripts/install-git-hooks.mjs'",
 # same failure mode already hit and fixed the same way in
-# ~/asset-manager's own Dockerfile.production). None of this image's
+# the ferrion platform's own Dockerfile.production). None of this image's
 # direct dependencies rely on their own install-time postinstall/preinstall
 # scripts (checked each package.json), so skipping lifecycle scripts here
 # is safe.

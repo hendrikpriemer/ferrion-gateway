@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/assets/ferrion-icon.svg" width="96" height="96" alt="ferrion"></p>
+
 # ferrion-gateway
 
 The on-site edge component of **ferrion**, an industrial asset platform. The

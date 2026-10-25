@@ -3,7 +3,7 @@ import type { DataSourceProtocol } from "../ferrion-client/types.js";
 
 /**
  * A read-only mirror of ferrion's own device catalog
- * (~/asset-manager/src/lib/known-device-templates.ts) - same ids, metric
+ * (ferrion's src/lib/known-device-templates.ts) - same ids, metric
  * keys, and protocol addressing, kept in sync by the consistency checks in
  * known-device-templates.test.ts. Used only by drivers/simulated to know
  * which node IDs/registers/topics to expose on the local simulated server;
@@ -18,7 +18,7 @@ export type DeviceMetricAddressing =
   // publish one bare number per topic isn't forced to have one - see
   // protocol/mqtt/gateway-client.ts's MqttConnectionConfig.jsonField.
   // jsonFieldFallbacks: kept here only for parity with ferrion's own
-  // catalog (~/asset-manager/src/lib/known-device-templates.ts) - the
+  // catalog (ferrion's src/lib/known-device-templates.ts) - the
   // local simulator (drivers/simulated) never reads it, it always
   // publishes the shape named by `jsonField` itself.
   | { kind: "mqtt"; topic: string; jsonField?: string; jsonFieldFallbacks?: string[] }
