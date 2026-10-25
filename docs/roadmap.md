@@ -5,7 +5,7 @@ ferrion-Plattform**, zusammen mit Spezifikationen, Ideen und Entscheidungen.
 Es gibt eine Roadmap für das ganze Produkt, nicht eine je Repository.
 
 Diese Datei listet nur die Schritte, die Arbeit in diesem Repo bedeuten. Status
-und Abhängigkeiten stehen ausschließlich in der Roadmap im `asset-manager`.
+und Abhängigkeiten stehen ausschließlich in der Roadmap im `ferrion`-Repo.
 
 | ID | Schritt | Anteil im Gateway |
 | --- | --- | --- |
@@ -16,6 +16,6 @@ und Abhängigkeiten stehen ausschließlich in der Roadmap im `asset-manager`.
 | R34 | Betrieb beim Kunden | Update mit Rückweg, Zustandsmeldung für die Überwachung mehrerer Installationen |
 | R27 | Onboarding Dauerbetrieb | Hintergrund-Erkennung, neue Geräte selbst melden |
 
-Das ausführliche Discovery-Konzept liegt im `asset-manager` unter
+Das ausführliche Discovery-Konzept liegt im `ferrion`-Repo unter
 `docs/roadmap/details/gateway-device-discovery.md`, der Grundsatz zur breiten
 Geräteanbindung unter `docs/roadmap/details/device-integration.md`.

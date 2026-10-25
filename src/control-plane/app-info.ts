@@ -6,7 +6,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const pkgPath = path.join(__dirname, "..", "..", "package.json");
 
 // Same fixed, non-localized postal address as the ferrion platform's own
-// About page (asset-manager's AboutSection.tsx) - one product family, one
+// About page (ferrion's AboutSection.tsx) - one product family, one
 // contact.
 const CONTACT = {
   name: "Hendrik Priemer",

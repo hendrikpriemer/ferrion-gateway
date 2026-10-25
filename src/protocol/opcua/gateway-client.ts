@@ -615,7 +615,7 @@ export class OpcuaGatewayClient {
   // ns=0;i=2264, part of every OPC UA server's standard address space).
   // ferrion needs it for the Janitza UMG 801: Janitza renumbered its node ids
   // between firmware 1.5.x and 1.6.x, and the catalogue uses the 1.6 ones -
-  // on a 1.5.2 device every source stayed silent (asset-manager#902). null
+  // on a 1.5.2 device every source stayed silent (ferrion#902). null
   // when the server does not say; never fails the caller's test.
   async readSoftwareVersion(): Promise<string | null> {
     await this.connect();

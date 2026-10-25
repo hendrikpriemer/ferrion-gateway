@@ -157,7 +157,7 @@ interface TrackedSource {
   lastValueAt?: number;
   lastError?: string;
   // The last error was "the device does not know this node" - a wrong
-  // configuration (a UMG 801 on firmware 1.5.x, asset-manager#902), shown as
+  // configuration (a UMG 801 on firmware 1.5.x, ferrion#902), shown as
   // its own status because retrying will not fix it.
   nodeUnknown?: boolean;
 }
@@ -477,7 +477,7 @@ export class ReadingLoop {
       const message = errorMessage(error);
       // Once per source and error, not on every retry: 140 sources on a
       // UMG 801 the template does not fit logged ~67,000 identical lines a
-      // day (asset-manager#902). A different error, or the same one after a
+      // day (ferrion#902). A different error, or the same one after a
       // good value in between, is logged again.
       const repeated = tracked?.lastError === message;
       if (tracked) {

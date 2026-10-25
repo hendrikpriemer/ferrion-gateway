@@ -2,7 +2,7 @@ name: Release
 
 # R01, stage 1: a tag vX.Y.Z builds the gateway image here instead of on
 # the VM, signs it, attaches the SBOM and keeps the last five versions
-# (decisions 2026-10-25, asset-manager docs/roadmap/DECISIONS.md). Releases
+# (decisions 2026-10-25, ferrion docs/roadmap/DECISIONS.md). Releases
 # are collected, about once a month (same decision).
 #
 # Signed keyless with Sigstore: the workflow proves its own identity through

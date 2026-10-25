@@ -106,7 +106,7 @@ describe("OpcuaGatewayClient against the simulator", () => {
     expect(recoveries).toHaveLength(2);
   }, 30_000);
 
-  it("reads the device's firmware version, for ferrion to refuse a UMG 801 older than 1.6 (asset-manager#902)", async () => {
+  it("reads the device's firmware version, for ferrion to refuse a UMG 801 older than 1.6 (ferrion#902)", async () => {
     server = new OpcuaSimulatorServer();
     await server.start(TEST_PORT, NAMESPACE, "127.0.0.1", { softwareVersion: "1.5.2+1c931b83.231006103238.b636" });
     client = new OpcuaGatewayClient(CONNECTION);
@@ -173,7 +173,7 @@ describe("noFirstValueResubscribeMs", () => {
 });
 
 describe("OpcuaNodeNotFoundError", () => {
-  it("is the protocol-neutral NodeNotFoundError the reading loop shows as its own status (asset-manager#902)", () => {
+  it("is the protocol-neutral NodeNotFoundError the reading loop shows as its own status (ferrion#902)", () => {
     expect(new OpcuaNodeNotFoundError("No namespace candidate serves node i=101260")).toBeInstanceOf(NodeNotFoundError);
   });
 });
