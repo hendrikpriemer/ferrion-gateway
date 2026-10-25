@@ -26,7 +26,7 @@
     "material-symbols": "0.48.0",
     "modbus-serial": "^8.0.25",
     "mqtt": "^5.16.0",
-    "node-opcua": "^2.187.9",
+    "node-opcua": "^2.187.12",
     "pino": "^10.4.0",
     "tsx": "^4.20.6",
     "undici": "^8.12.3",
