@@ -24,17 +24,17 @@ async function closedPort(): Promise<number> {
 
 describe("probeTcp", () => {
   it("sees an open port", async () => {
-    expect(await probeTcp("127.0.0.1", await listen(), 500)).toBe(true);
+    expect(await probeTcp("127.0.0.1", await listen(), 500)).toBe("open");
   });
 
   it("sees a refused port as closed", async () => {
-    expect(await probeTcp("127.0.0.1", await closedPort(), 500)).toBe(false);
+    expect(await probeTcp("127.0.0.1", await closedPort(), 500)).toBe("closed");
   });
 
   it("gives up after the timeout on an address that never answers", async () => {
     // TEST-NET-1 (RFC 5737) is never routed, so the connect hangs.
     const started = Date.now();
-    expect(await probeTcp("192.0.2.1", 4840, 100)).toBe(false);
+    expect(await probeTcp("192.0.2.1", 4840, 100)).toBe("silent");
     expect(Date.now() - started).toBeLessThan(1000);
   });
 });

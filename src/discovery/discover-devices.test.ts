@@ -28,9 +28,56 @@ function identity(overrides: Partial<Identity> = {}): Identity {
   };
 }
 
-const openOn = (...open: string[]): ProbeFn => vi.fn(async (host, port) => open.includes(`${host}:${port}`));
+const openOn = (...open: string[]): ProbeFn => vi.fn(async (host, port) => (open.includes(`${host}:${port}`) ? "open" : "closed"));
 
 describe("discoverDevices", () => {
+  // ferrion#961: the first contact to a device can outlast the first
+  // timeout; two searches a few minutes apart found 14 and 23 open ports.
+  describe("second pass over silent targets", () => {
+    it("finds a device that only answers the second time, with the longer timeout", async () => {
+      const calls: Array<[string, number]> = [];
+      const probe = vi.fn<ProbeFn>(async (host, _port, timeoutMs) => {
+        calls.push([host, timeoutMs]);
+        if (host === "10.0.4.7") return calls.filter(([h]) => h === host).length === 1 ? "silent" : "open";
+        return "closed";
+      });
+      const result = await discoverDevices(plan({ hosts: ["10.0.4.5", "10.0.4.7"] }), { probe, identify: async () => identity() });
+
+      expect(result.candidates.map((candidate) => candidate.host)).toEqual(["10.0.4.7"]);
+      expect(calls).toEqual([
+        ["10.0.4.5", 500],
+        ["10.0.4.7", 500],
+        ["10.0.4.7", 750],
+      ]);
+      expect(result.scan).toMatchObject({ probed: 2, retried: 1, openPorts: 1, truncated: false });
+    });
+
+    it("does not ask again where something answered with a refusal", async () => {
+      const probe = openOn();
+      const result = await discoverDevices(plan({ hosts: ["10.0.4.5", "10.0.4.6"] }), { probe, identify: async () => identity() });
+
+      expect(probe).toHaveBeenCalledTimes(2);
+      expect(result.scan.retried).toBe(0);
+    });
+
+    it("reports a second pass cut short by the budget as truncated", async () => {
+      let clock = 0;
+      // A probe costs its timeout: cheap in the first pass, dear in the second.
+      const probe = vi.fn<ProbeFn>(async (_host, _port, timeoutMs) => {
+        await Promise.resolve();
+        clock += timeoutMs === 750 ? 1_000 : 10;
+        return "silent";
+      });
+      // 20 targets: the whole first pass fits, the second does not.
+      const hosts = Array.from({ length: 20 }, (_, index) => `10.0.4.${index + 1}`);
+      const result = await discoverDevices(plan({ hosts }, { budgetMs: 5_000 }), { probe, identify: async () => identity(), now: () => clock });
+
+      expect(result.scan.probed).toBe(20);
+      expect(result.scan.retried).toBeLessThan(20);
+      expect(result.scan).toMatchObject({ truncated: true, truncatedBy: "budget" });
+    });
+  });
+
   it("identifies every open port and keeps the probed address, not the reported one", async () => {
     const identify = vi.fn<IdentifyFn>(async () => identity());
     const result = await discoverDevices(plan({ sweep: { cidrs: ["10.0.4.0/29"] } }), {
@@ -131,9 +178,9 @@ describe("discoverDevices", () => {
 
   it("stops probing when the budget runs out and says so", async () => {
     let clock = 0;
-    const probe: ProbeFn = vi.fn(async () => {
+    const probe = vi.fn<ProbeFn>(async () => {
       clock += 1_000;
-      return false;
+      return "closed";
     });
     const result = await discoverDevices(plan({ sweep: { cidrs: ["10.0.4.0/24"] } }, { budgetMs: 5_000 }), {
       probe,
@@ -154,7 +201,7 @@ describe("discoverDevices", () => {
     const probe: ProbeFn = vi.fn(async (host) => {
       await Promise.resolve();
       clock += 500;
-      return host === "10.0.4.200";
+      return host === "10.0.4.200" ? "open" : "silent";
     });
     const identify = vi.fn<IdentifyFn>(async () => identity());
     const result = await discoverDevices(plan({ hosts: ["10.0.4.200"], sweep: { cidrs: ["10.0.4.0/24"] } }, { budgetMs: 10_000 }), {
@@ -179,7 +226,7 @@ describe("discoverDevices", () => {
       return identity();
     });
     const result = await discoverDevices(plan({ hosts: ["10.0.4.1", "10.0.4.2", "10.0.4.3", "10.0.4.4", "10.0.4.5"] }, { budgetMs: 5_000 }), {
-      probe: async () => true,
+      probe: async () => "open",
       identify,
       now: () => clock,
     });
@@ -191,7 +238,7 @@ describe("discoverDevices", () => {
 
   it(`keeps at most ${MAX_CANDIDATES} candidates and reports the rest as truncated`, async () => {
     const result = await discoverDevices(plan({ sweep: { cidrs: ["10.0.4.0/25"] } }), {
-      probe: async () => true,
+      probe: async () => "open",
       identify: async (host) => identity({ applicationUri: `urn:${host}` }),
     });
 
