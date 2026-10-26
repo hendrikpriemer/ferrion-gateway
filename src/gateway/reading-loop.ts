@@ -162,7 +162,8 @@ interface TrackedSource {
   nodeUnknown?: boolean;
 }
 
-export type TrackedSourceStatusValue = "live" | "stale" | "error" | "node-unknown";
+export type { TrackedSourceStatusValue } from "./tracked-status.js";
+import type { TrackedSourceStatusValue } from "./tracked-status.js";
 
 // One metric (= one GatewayDataSource) of a physical sensor. Carried
 // alongside the aggregate row so the UI can show WHICH datapoint of a
