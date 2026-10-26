@@ -61,8 +61,12 @@ sequenceDiagram
 2. **Sweep.** A plain TCP connect to every address and port, closed at once;
    no OPC UA byte is sent. At most 16 probes run at once, each given up after
    500 ms: at most about 32 connection attempts per second. Named hosts go
-   first. The sweep gets at most 70 % of the budget; the rest is kept for
-   identifying what it found.
+   first. Targets that stayed **silent** (no answer at all, as opposed to a
+   refusal) get a **second pass** with 750 ms each: the first contact to a
+   device can outlast 500 ms while its address is being resolved, and two
+   searches of the same network once found 14 and 23 open ports
+   (ferrion#961). Both passes share at most 70 % of the budget; the rest is
+   kept for identifying what they found.
 3. **Identify.** One connection per open port, at most 4 at once:
    - `FindServers`: the server names itself; a Local Discovery Server (LDS) also
      names the servers registered with it, possibly on other ports.
@@ -123,15 +127,17 @@ reported one travels along as `advertisedEndpointUrl` for information.
     }
   ],
   "discoveryServers": [{ "host": "10.0.4.5", "port": 4840, "applicationUri": "urn:…", "registeredServers": 2 }],
-  "scan": { "durationMs": 21400, "probed": 254, "openPorts": 3, "notOpcua": 0, "truncated": false, "truncatedBy": null, "limit": ["10.0.4.0/24"] }
+  "scan": { "durationMs": 21400, "probed": 254, "retried": 251, "openPorts": 3, "notOpcua": 0, "truncated": false, "truncatedBy": null, "limit": ["10.0.4.0/24"] }
 }
 ```
 
 - `foundBy`: `sweep`, `host` (named in the request) and/or `lds`.
 - `sessionSkipped`: `known-data-source` or `security-required` when no session
   was opened.
-- `scan.truncated`/`truncatedBy`: the budget ran out (`budget`) or there were
-  more than 64 candidates (`candidates`).
+- `scan.probed`: targets in the first pass; `scan.retried`: silent ones
+  probed again.
+- `scan.truncated`/`truncatedBy`: the budget ran out (`budget`, in either
+  pass) or there were more than 64 candidates (`candidates`).
 - Texts from a device are trimmed and cut at 256 characters; at most 64
   namespaces and 64 registered servers with 8 URLs each are passed on.
 

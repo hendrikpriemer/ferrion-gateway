@@ -1,7 +1,7 @@
 import { cidrContainsAddress, formatCidr, formatIpv4, parseIpv4 } from "./ipv4.js";
 import { IDENTIFY_CONCURRENCY, IDENTIFY_TIMEOUT_MS, identifyOpcuaServer, type IdentifyFn, type Identity } from "./opcua-identify.js";
 import { endpointKey, type ScanPlan } from "./scan-request.js";
-import { PROBE_CONCURRENCY, PROBE_TIMEOUT_MS, probeTcp, runPool, type ProbeFn } from "./tcp-probe.js";
+import { PROBE_CONCURRENCY, PROBE_RETRY_TIMEOUT_MS, PROBE_TIMEOUT_MS, probeTcp, runPool, type ProbeFn } from "./tcp-probe.js";
 
 // DISCOVER_DEVICES (R07, stage 2): sweep, identify, and what a Local
 // Discovery Server adds, within the scan's budget and candidate limit.
@@ -33,8 +33,10 @@ export interface DiscoveryResult {
   discoveryServers: Array<{ host: string; port: number; applicationUri: string | null; registeredServers: number }>;
   scan: {
     durationMs: number;
-    // TCP probes actually sent.
+    // Targets probed in the first pass.
     probed: number;
+    // Of those, silent ones probed a second time (ferrion#961).
+    retried: number;
     openPorts: number;
     // Open ports that did not speak OPC UA (a web server on 4840, say).
     notOpcua: number;
@@ -89,18 +91,22 @@ export async function discoverDevices(plan: ScanPlan, deps: DiscoverDeps = {}): 
   const swept = plan.addresses.filter((address) => !plan.namedHosts.has(address));
   const targets = [...named, ...swept].flatMap((address) => plan.ports.map((port) => ({ address, port })));
   const open: Endpoint[] = [];
-  const { started: probed } = await runPool(
-    targets,
-    PROBE_CONCURRENCY,
-    started + Math.floor(plan.budgetMs * SWEEP_BUDGET_SHARE),
-    async ({ address, port }) => {
-      if (await probe(formatIpv4(address), port, PROBE_TIMEOUT_MS)) {
-        open.push({ address, port, foundBy: new Set([plan.namedHosts.has(address) ? "host" : "sweep"]) });
+  const silent: typeof targets = [];
+  const sweepDeadline = started + Math.floor(plan.budgetMs * SWEEP_BUDGET_SHARE);
+  const sweep = (timeoutMs: number, onSilent: (target: (typeof targets)[number]) => void) =>
+    async (target: (typeof targets)[number]) => {
+      const outcome = await probe(formatIpv4(target.address), target.port, timeoutMs);
+      if (outcome === "open") {
+        open.push({ address: target.address, port: target.port, foundBy: new Set([plan.namedHosts.has(target.address) ? "host" : "sweep"]) });
+      } else if (outcome === "silent") {
+        onSilent(target);
       }
-    },
-    now,
-  );
-  if (probed < targets.length) truncatedBy = "budget";
+    };
+  const { started: probed } = await runPool(targets, PROBE_CONCURRENCY, sweepDeadline, sweep(PROBE_TIMEOUT_MS, (target) => silent.push(target)), now);
+  // Second pass over what stayed silent, in the same share of the budget
+  // (ferrion#961). Named hosts are still first: the order is kept.
+  const { started: retried } = await runPool(silent, PROBE_CONCURRENCY, sweepDeadline, sweep(PROBE_RETRY_TIMEOUT_MS, () => {}), now);
+  if (probed < targets.length || retried < silent.length) truncatedBy = "budget";
 
   // 2. Identify, then once more for what an LDS named. One hop only: an LDS
   //    registered at another LDS is not followed.
@@ -172,6 +178,7 @@ export async function discoverDevices(plan: ScanPlan, deps: DiscoverDeps = {}): 
     scan: {
       durationMs: now() - started,
       probed,
+      retried,
       openPorts: open.length,
       notOpcua,
       truncated: truncatedBy !== null,
