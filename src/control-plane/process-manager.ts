@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { z } from "zod";
 import type { InstanceConfig } from "../config/schema.js";
 import type { TrackedSensorStatus } from "../gateway/reading-loop.js";
+import { TRACKED_SOURCE_STATUSES } from "../gateway/tracked-status.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const childEntryPath = path.join(__dirname, "..", "..", "fleet", "child-entry.ts");
@@ -72,6 +73,8 @@ interface ManagedProcess {
   startedAt: number;
   exited: boolean;
   escalationTimers: NodeJS.Timeout[];
+  // Causes of rejected IPC messages already logged for this process.
+  reportedIpcRejections: Set<string>;
 }
 
 export interface ExitClassification {
@@ -111,7 +114,7 @@ export function classifyExit(code: number | null, signal: NodeJS.Signals | null)
 // What a child may tell us over IPC. Own code on both ends, but `lastError`
 // ends up in the Web UI and `sensors` drives a table there - a cast is not
 // a contract (review 2026-09, N-11). Anything else is logged and dropped.
-const childMessageSchema = z.discriminatedUnion("type", [
+export const childMessageSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("started") }),
   z.object({ type: z.literal("error"), error: z.string().max(2000) }),
   z.object({ type: z.literal("push-status"), ok: z.boolean() }),
@@ -124,14 +127,14 @@ const childMessageSchema = z.discriminatedUnion("type", [
         protocol: z.enum(["OPC_UA", "MODBUS_TCP", "MQTT"]),
         host: z.string().optional(),
         port: z.union([z.string(), z.number()]).optional(),
-        status: z.enum(["live", "stale", "error"]),
+        status: z.enum(TRACKED_SOURCE_STATUSES),
         metrics: z
           .array(
             z.object({
               dataSourceId: z.string(),
               metricKey: z.string(),
               label: z.string(),
-              status: z.enum(["live", "stale", "error"]),
+              status: z.enum(TRACKED_SOURCE_STATUSES),
               lastValueAt: z.number().nullable(),
             }),
           )
@@ -140,6 +143,20 @@ const childMessageSchema = z.discriminatedUnion("type", [
     ),
   }),
 ]);
+
+/**
+ * Where a rejected IPC message went wrong, short enough for one log line:
+ * "sensors.4.status: Invalid option ..." - never the message itself, which
+ * may carry device names.
+ */
+export function describeIpcRejection(error: z.ZodError): string {
+  const issue = error.issues[0];
+  if (!issue) {
+    return "unknown";
+  }
+  const path = issue.path.length ? issue.path.join(".") : "(message)";
+  return `${path}: ${issue.message}`.slice(0, 300);
+}
 
 export type ChildEvent =
   | z.infer<typeof childMessageSchema>
@@ -236,13 +253,20 @@ export class ProcessManager {
       startedAt: Date.now(),
       exited: false,
       escalationTimers: [],
+      reportedIpcRejections: new Set(),
     };
     this.processes.set(instanceId, managed);
 
     child.on("message", (message: unknown) => {
       const parsed = childMessageSchema.safeParse(message);
       if (!parsed.success) {
-        console.warn(`[process-manager] ignoring malformed IPC message from ${instanceId}`);
+        // Says what was wrong, once per instance and cause: the bare line
+        // used to repeat every few seconds and hid the reason (ferrion#960).
+        const reason = describeIpcRejection(parsed.error);
+        if (!managed.reportedIpcRejections.has(reason)) {
+          managed.reportedIpcRejections.add(reason);
+          console.warn(`[process-manager] ignoring malformed IPC message from ${instanceId}: ${reason}`);
+        }
         return;
       }
       const event = parsed.data;

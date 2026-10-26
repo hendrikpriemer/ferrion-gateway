@@ -2,7 +2,8 @@ import { EventEmitter } from "node:events";
 import type { ChildProcess } from "node:child_process";
 import { describe, expect, it, vi } from "vitest";
 import type { InstanceConfig } from "../config/schema.js";
-import { childEnv, classifyExit, ProcessManager } from "./process-manager.js";
+import { childEnv, childMessageSchema, classifyExit, describeIpcRejection, ProcessManager } from "./process-manager.js";
+import { TRACKED_SOURCE_STATUSES } from "../gateway/tracked-status.js";
 
 type FakeChild = EventEmitter & {
   connected: boolean;
@@ -100,6 +101,46 @@ describe("ProcessManager", () => {
     ];
     children[0]!.emit("message", { type: "tracked-sensors", sensors });
     expect(pm.getStatus("id1").trackedSensors).toEqual(sensors);
+  });
+
+  // ferrion#960: "node-unknown" was added to the reading loop only; the
+  // schema here rejected every status message of an instance with such a
+  // source, and its whole status page stayed "no current data".
+  it.each(TRACKED_SOURCE_STATUSES)("accepts every status the reading loop can set: %s", (status) => {
+    const { forkFn, children } = fakeForkFn();
+    const pm = new ProcessManager(forkFn);
+    pm.start("id1", config);
+    const sensors = [
+      {
+        assetId: "asset1",
+        assetName: "NSHV 3",
+        protocol: "OPC_UA",
+        status,
+        metrics: [{ dataSourceId: "ds1", metricKey: "activePowerSum", label: "P", status, lastValueAt: null }],
+      },
+    ];
+
+    children[0]!.emit("message", { type: "tracked-sensors", sensors });
+
+    expect(pm.getStatus("id1").trackedSensors).toEqual(sensors);
+  });
+
+  it("logs a rejected message once per cause, with where it went wrong", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const { forkFn, children } = fakeForkFn();
+    const pm = new ProcessManager(forkFn);
+    pm.start("id1", config);
+    const bad = { type: "tracked-sensors", sensors: [{ assetId: "a", assetName: "A", protocol: "OPC_UA", status: "bogus", metrics: [] }] };
+
+    children[0]!.emit("message", bad);
+    children[0]!.emit("message", bad);
+    children[0]!.emit("message", { type: "push-status", ok: "yes" });
+
+    expect(warn).toHaveBeenCalledTimes(2);
+    expect(warn.mock.calls[0]![0]).toMatch(/^\[process-manager\] ignoring malformed IPC message from id1: sensors\.0\.status: /);
+    expect(warn.mock.calls[1]![0]).toMatch(/: ok: /);
+    expect(pm.getStatus("id1").trackedSensors).toBeUndefined();
+    warn.mockRestore();
   });
 
   it("does not fork a second child while already running/starting", () => {
@@ -385,5 +426,24 @@ describe("ProcessManager", () => {
 
     expect(pm.getStatus("id1")).toEqual({ status: "stopped" });
     expect(pm.isRunning("id1")).toBe(false);
+  });
+});
+
+describe("describeIpcRejection", () => {
+  it("names the path of the first problem, or the message as a whole", () => {
+    const enumError = childMessageSchema.safeParse({ type: "push-status", ok: 1 });
+    expect(!enumError.success && describeIpcRejection(enumError.error)).toMatch(/^ok: /);
+
+    const typeError = childMessageSchema.safeParse({ type: "nonsense" });
+    expect(!typeError.success && describeIpcRejection(typeError.error)).toMatch(/^type: /);
+
+    const notAnObject = childMessageSchema.safeParse("hello");
+    expect(!notAnObject.success && describeIpcRejection(notAnObject.error)).toMatch(/^\(message\): /);
+  });
+
+  it("answers 'unknown' for an error without issues and stays short", () => {
+    expect(describeIpcRejection({ issues: [] } as never)).toBe("unknown");
+    const long = { issues: [{ path: ["x"], message: "y".repeat(500) }] } as never;
+    expect(describeIpcRejection(long).length).toBe(300);
   });
 });
