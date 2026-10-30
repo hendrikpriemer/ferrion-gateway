@@ -192,6 +192,51 @@ building against them.
   provides the identity provider through its manifest was removed from Core
   on 2026-10-22; the provider is a Core-level setting.
 
+**The pieces behind it, from FLECS's own Forgejo (git.flecs.tech/flecs, 23
+repositories, read 2026-10-30)**
+
+- **fence** (Rust, updated daily) is FLECS's OAuth 2.0 server. It issues
+  RS256 JWTs (`/meta/jwk`) with `sub`, `exp`, `iss`,
+  `aud: ["flecs-core-api", "fence-api"]`, `email`, `preferred_username`,
+  `realm_access.roles` and `resource_access.account.roles`; roles are the
+  names of the user's **groups** including subgroups (e.g.
+  `tech.flecs.core.admin`). It has a user and group API
+  (`/users`, `/users/{uid}/roles`, `/users/super-admin`), **machine clients**
+  with `client_credentials` by secret or certificate (`/clients`, a client
+  gets the roles of its groups), authorization code with PKCE
+  (`client_id=flecs`, `scope=admin`), a login page, and its own Casbin policy.
+  The docs page that allows "exactly one super-admin" is behind the code.
+  Runs as a system container on port 27000; floxy exposes it under `/auth/`.
+- **floxy** is the nginx-based reverse proxy in front of the device: `/api/`
+  to Core, `/ui/` to the web app, `/auth/` to fence, plus one generated
+  `location` per app editor (`proxy_pass` to the instance's IP and port).
+  The generated editor locations carry **no `auth_request`**: the proxy does
+  not authenticate app UIs, which confirms the point above.
+- **picket** ("reading and sharing roles for authentication") is an empty
+  stub so far, i.e. a shared roles library for apps is planned, not built.
+- **app-manifest 3.x** (classic FLECS apps) carries `provides`, which fence
+  uses to announce itself (`provides.auth` with `kind`, `issuer_url`,
+  `jwk_url`, `authorize_url`, `token_url`, `port`); Core keeps a generic
+  provider/dependency model (`providers`, `depends`) behind the Experimental
+  endpoints.
+- **Release notes** (repository `release-notes`): 5.3 (July 2026) brought
+  the RBAC rework ("roles now inherit permissions from their corresponding
+  core roles") and mandatory user creation; 5.4 moved Core configuration to
+  `/usr/local/etc/flecsd.d/*.conf` and signs Core and web-app images; 5.5
+  (October 2026) adds OpenTelemetry export, passes collector endpoints to
+  every Margo workload as environment variables, and lets FILiP install
+  headless (`--webapp-version none`) and offline.
+- Also there: **filip** (installer, `curl -fsSL install.flecs.tech | bash`, or
+  one container with the Docker socket), **wfm-client-rs** (generated client
+  for the Margo Workload Fleet Manager API 1.0.0-rc.2), **margo-types-rs**,
+  **composers** (the compose parser BART uses), **otel-collector**,
+  **console-api**, **net-spider**.
+
+For the gateway this adds one option: besides users logging in through the
+browser, the gateway process itself could hold a fence **client** (secret or
+certificate) and obtain a token with `client_credentials`, should it ever need
+to call the Core API or prove its identity to another app on the device.
+
 **What the gateway should do (ferrion#1051)**
 
 1. Add an optional **OIDC login** to the control plane, generic rather than
