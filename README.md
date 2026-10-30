@@ -31,7 +31,8 @@ a separate, commercial product.
   with real protocol servers, for development and demos without hardware.
 - **Runs as one container** with a local web UI to set up the ferrion
   connection and manage simulated instances. A [Margo](https://margo.org)
-  application description is included for edge orchestrators.
+  application description is included; what is still missing for a Margo or
+  FLECS deployment is listed in [docs/margo.md](docs/margo.md).
 
 ## Architecture at a glance
 
@@ -68,13 +69,16 @@ Requirements: Docker with Compose, or Node.js 22.13 or later.
 
 1. In ferrion, open **Settings → Gateways**, create a gateway and copy its API
    key (it is shown once).
-2. Start the gateway:
+2. Start the gateway. From the working tree:
 
    ```sh
    docker compose up -d --build
    ```
 
-   or without Docker:
+   For a production host, use the signed release image instead of building:
+   [docs/releases.md](docs/releases.md) shows how to pull and verify it, and
+   [docs/deployment.md](docs/deployment.md) the full update procedure. Or
+   without Docker:
 
    ```sh
    npm install
@@ -105,6 +109,7 @@ in its header.
 | Memory and process cost per instance, sizing a device | [docs/resource-usage.md](docs/resource-usage.md) |
 | Developing, testing, simulated devices, fleet launcher | [docs/development.md](docs/development.md) |
 | Signed release images and how to verify them | [docs/releases.md](docs/releases.md) |
+| Margo and FLECS compatibility: requirements, status, gaps | [docs/margo.md](docs/margo.md) |
 | Updating a running installation (German) | [docs/deployment.md](docs/deployment.md) |
 | Security model, reporting a vulnerability | [SECURITY.md](SECURITY.md) |
 | Penetration test 2026-09 and code review (German) | [docs/security/](docs/security/), [docs/review-2026-09.md](docs/review-2026-09.md) |
@@ -130,7 +135,8 @@ The local web UI has **no authentication** and is reachable from the gateway
 machine only; that is the trust boundary, the same as editing a configuration
 file on the machine. Guards against cross-site requests and DNS rebinding keep
 a web page in the same browser from crossing it. Release images are signed and
-carry an SBOM. Details and how to report a vulnerability: [SECURITY.md](SECURITY.md).
+carry an SBOM; the code is scanned with CodeQL on every change. Details and how
+to report a vulnerability: [SECURITY.md](SECURITY.md).
 
 ## License
 

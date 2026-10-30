@@ -25,7 +25,7 @@ ferrion shows as its connection status.
 ## Poll for commands
 
 ```http
-GET /api/gateway/commands?capabilities=TEST_CONNECTION,BROWSE_DATA_POINTS,DISCOVER_DEVICES&version=0.1.57&discoveryLimit=10.0.4.0/24
+GET /api/gateway/commands?capabilities=TEST_CONNECTION,BROWSE_DATA_POINTS,DISCOVER_DEVICES&version=0.1.65&discoveryLimit=10.0.4.0/24
 ```
 
 Every 3 s per instance. The query reports what the gateway is:

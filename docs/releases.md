@@ -24,15 +24,18 @@ A tag `vX.Y.Z` on `main` starts `.github/workflows/release.yml`:
    attestations; older ones are deleted (`scripts/ghcr-prune.sh`).
 
 Releases are collected, about once a month; a security fix gets its own release
-at once.
+at once. The workflow was tried with `v0.1.65-rc.1` on 2026-10-30 (under two
+minutes, signature and attestation verified); `v0.1.65` is planned as the first
+regular release with the ferrion update in November 2026. Until then only
+`-rc` trial images exist in the registry, and they are pruned by later releases.
 
 ## Verifying an image
 
 On the gateway host:
 
 ```sh
-scripts/vm-release-pull.sh v0.1.57            # verify, then pin in .env
-scripts/vm-release-pull.sh v0.1.57 --check    # verify only
+scripts/vm-release-pull.sh v0.1.65            # verify, then pin in .env
+scripts/vm-release-pull.sh v0.1.65 --check    # verify only
 ```
 
 The script pulls the tag, resolves it to the image digest (a tag can be moved, a

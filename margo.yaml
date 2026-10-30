@@ -7,10 +7,14 @@
 # ComponentProperties.packageLocation definition ("a direct path to the
 # compose.yaml").
 #
-# Not yet published to a FLECS/Margo catalog - `icon`/`releaseNotes` are
-# still omitted rather than pointing at files that don't exist yet; add
-# real assets under resources/ before actual submission. `licenseFile` is
-# set: the repo now carries a real LICENSE (Apache-2.0).
+# Not yet published to a FLECS/Margo catalog, and written against an
+# earlier draft: the current Margo release (PR3: `apiVersion: v1`, top-level
+# `id`, components with `repository`/`revision`) and FLECS's BART
+# (`margo/v1alpha1`, `requiredResources`) both reject this file as it is,
+# and the compose file it points at still uses `build:`. The requirements,
+# the gaps and the order to close them are in docs/margo.md (tracked in
+# ferrion#814). `licenseFile` is set: the repo carries a real LICENSE
+# (Apache-2.0).
 apiVersion: margo.org/v1-alpha1
 kind: ApplicationDescription
 metadata:

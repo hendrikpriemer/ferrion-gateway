@@ -95,7 +95,7 @@ cp config/instances/example.instance.json config/instances/my-instance.json
 npm run dev -- config/instances/my-instance.json
 ```
 
-For a bridge-only instance (see "Bridging real hardware" above), start
+For a bridge-only instance (see "The bridge in detail" above), start
 from `config/instances/example-bridge.instance.json` instead - it has no
 `device`/`ports` fields at all.
 
@@ -117,12 +117,14 @@ from `config/instances/example-bridge.instance.json` instead - it has no
 docker compose up -d --build
 ```
 
-**Updating an existing deployment is not just this command** — a `git pull`
-alone leaves the old image running, and the persisted `data/` directory has
-to be checked against the new version's schemas before the switch, or the
-control plane can come up `healthy` with no instances at all.
-[deployment.md](deployment.md) has the full procedure: back up,
-build, check, switch, verify, roll back.
+This builds from the working tree, which is right for development. A
+production host runs the signed release image instead
+([releases.md](releases.md)). **Updating an existing deployment is not just
+this command** — a `git pull` alone leaves the old image running, and the
+persisted `data/` directory has to be checked against the new version's
+schemas before the switch, or the control plane can come up `healthy` with no
+instances at all. [deployment.md](deployment.md) has the full procedure: back
+up, pull and verify (or build), check, switch, verify, roll back.
 
 Starts the control-plane on <http://127.0.0.1:4000> (published to
 `127.0.0.1` only, not `0.0.0.0` - see `docker-compose.yml`'s comments on
@@ -136,20 +138,18 @@ new instance of the same protocol takes the next port up - see the
 compose file if you need more than that.
 
 `margo.yaml` at the repo root is a [Margo](https://margo.org) Application
-Description ([spec](https://github.com/margo/specification)) describing
-this as a Compose-deployable app, so it can be onboarded onto a
-FLECS-managed edge device (or any other Margo-compliant device) the same
-way as any other app - its `packageLocation` points directly at
-`docker-compose.yml`. Not yet published to any FLECS/Margo catalog; add a
-real `resources/icon.png` etc. before actually submitting it.
+Description written against an earlier draft of the specification. It is
+not yet accepted by the current Margo release or by FLECS's packaging tool
+BART, and the compose file still uses `build:`; [margo.md](margo.md) lists
+the requirements, the gaps and the order to close them (ferrion#814).
 
 **If ferrion itself runs natively on the host (not in Docker)**, set the
 ferrion connection's base URL to `https://host.docker.internal:3000`, not
 `https://localhost:3000` - inside the container, `localhost` means "this
 container", not "the host machine", the same reachability distinction as
 `FG_BIND_HOST` above but in the opposite direction. The connection status
-indicator (see "Connection status" below) will show "Unreachable" if this
-is set wrong.
+indicator ([resilience.md](resilience.md), "Connection status in the web UI")
+will show "Unreachable" if this is set wrong.
 
 ## Disclosed simplification: AF2 flow-rate ranges
 
@@ -170,8 +170,8 @@ buffer's dedup/requeue behavior, the HTTP client against a real local
 test server including a TLS case) - not a 1:1 copy of ferrion's
 100%-coverage rule. The real `node-opcua`/`modbus-serial`/`aedes`/`mqtt`
 server↔client wiring is deliberately **not** unit-tested; it's exercised
-by actually running instances end-to-end via the Web UI (see "Quick
-start" above).
+by actually running instances end-to-end via the Web UI (see the quick start
+in the [README](../README.md)).
 
 ## Before a pull request
 
