@@ -47,8 +47,12 @@ carry an SBOM; see [docs/releases.md](docs/releases.md) for how to verify them.
 - **Field devices are only read.** The device search is bounded by
   `FG_DISCOVERY_ALLOWED_CIDRS`, which ferrion cannot widen, and opens no session
   at devices already in use ([docs/device-discovery.md](docs/device-discovery.md)).
-- **Supply chain.** Dependencies are watched by Dependabot; release images are
-  built in CI, signed keyless with Sigstore, and carry a CycloneDX SBOM.
+- **Supply chain.** Dependencies are watched by Dependabot with security
+  updates enabled; secret scanning with push protection is on; CodeQL scans
+  every push and pull request (Security tab → Code scanning). Release images
+  are built in CI, signed keyless with Sigstore, and carry a CycloneDX SBOM;
+  a host verifies both before it starts an image
+  ([docs/releases.md](docs/releases.md)).
 
 The penetration test of September 2026 and the code review that followed are
 published in [docs/security/](docs/security/) and

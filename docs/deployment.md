@@ -5,15 +5,16 @@ aktualisiert wird. Sie ist nicht an eine bestimmte Version gebunden — der
 Ablauf gilt für jedes Update.
 
 Wer nur wissen will, was eine einzelne Aktualisierung inhaltlich ändert,
-liest den zugehörigen Review- oder Release-Vermerk; hier steht das
-Verfahren.
+liest die Notizen des GitHub-Releases; hier steht das Verfahren.
 
 ## Der wichtigste Satz vorweg
 
 **`git pull` allein aktualisiert nichts.** Das Gateway läuft als Container
-aus einem gebauten Image. Ohne `--build` läuft nach dem Pull weiterhin das
-alte Image, und zwar ohne jede Fehlermeldung. Das ist die mit Abstand
-häufigste Fehlbedienung.
+aus einem Abbild. Der Pull bringt nur Skripte und Doku; das neue Abbild kommt
+erst mit `scripts/vm-release-pull.sh` (signiertes Release, Abschnitt 1) bzw.
+`--build` (Rückweg ohne Registry) und dem anschließenden `up -d`. Ohne diesen
+Schritt läuft nach dem Pull weiterhin das alte Abbild, ohne jede
+Fehlermeldung. Das ist die mit Abstand häufigste Fehlbedienung.
 
 ## Was ein Update anfasst und was nicht
 
@@ -29,7 +30,7 @@ den Projektnamen davor, also je nach Verzeichnis etwa
 `ferrion-gateway_ferrion-gateway-data`. Der Unterschied fällt erst auf, wenn
 man es mit `docker volume ls` sucht.
 
-Ein `docker compose up -d --build` ersetzt den Container, nicht das Volume.
+Ein `docker compose up -d` ersetzt den Container, nicht das Volume.
 Nur ein ausdrückliches `docker compose down -v` löscht die Daten — dieser
 Schalter gehört in kein Update.
 
@@ -79,6 +80,19 @@ davon unberührt und liefert weiter Daten.
 
 Ohne Registry, als Rückweg: `build: .` statt `image:` und `docker compose
 build`; das kostet auf der VM Platz und Zeit.
+
+**Beim ersten Wechsel von `build:` auf `image:`** gibt es noch keine
+`.env.bak-…` mit einem `GATEWAY_IMAGE`, und das laufende, auf der VM gebaute
+Abbild liegt nicht in der Registry. Vor dem Umschalten benennen:
+
+```sh
+docker tag "$(docker inspect --format '{{.Image}}' <container>)" ferrion-gateway-rollback:<alte Version>
+```
+
+(`<container>` aus `docker compose ps`). Der Rückweg ist dann
+`GATEWAY_IMAGE=ferrion-gateway-rollback:<alte Version>` in `.env` und
+`docker compose up -d`; ab dem zweiten Release reicht die Sicherung des
+Skripts.
 
 ### Prüfen, ob der Datenstand die neue Version überlebt
 
@@ -273,13 +287,19 @@ Der Detailgrad kommt aus `FG_LOG_LEVEL` (`fatal` bis `trace`, Standard
 ## Erstinstallation
 
 Auf einer neuen Maschine entfallen Sicherung und Vorabprüfung, weil es noch
-keine Daten gibt:
+keine Daten gibt. Mit dem signierten Release (empfohlen; einmalige
+Einrichtung wie in Abschnitt 1):
 
 ```sh
-git clone <repo> && cd ferrion-gateway
-docker compose up -d --build
+git clone https://github.com/hendrikpriemer/ferrion-gateway.git && cd ferrion-gateway
+# Compose-Datei: beim Dienst ferrion-gateway `build: .` durch die `image:`-Zeile aus Abschnitt 1 ersetzen
+scripts/vm-release-pull.sh v<Version>
+docker compose up -d
 ssh -L 4000:127.0.0.1:4000 <vm>   # von außen, falls nicht lokal bedient
 ```
+
+Ohne Registry stattdessen `docker compose up -d --build` mit der
+unveränderten Compose-Datei.
 
 Danach im Browser unter `http://localhost:4000` die ferrion-Verbindung
 eintragen (Basis-URL und API-Schlüssel aus der Plattform) und die Instanzen

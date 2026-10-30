@@ -15,6 +15,7 @@ und Abhängigkeiten stehen ausschließlich in der Roadmap im `ferrion`-Repo.
 | R22 | Discovery Modbus TCP und MQTT, Signal-Zuordnung, Zusatzmodule für Companion Specs, Konnektor-Konfiguration aus AID/AIMC und Server Datasheet | `src/discovery/tcp-probe.ts` und `scan-request.ts` (aus R07) mitbenutzen, FC 43/14, MQTT-Lauschen; Leser je Spec über TypeDefinition statt fester NodeIds (zuerst DI und Machinery) |
 | R34 | Betrieb beim Kunden | Update mit Rückweg, Zustandsmeldung für die Überwachung mehrerer Installationen |
 | R27 | Onboarding Dauerbetrieb | Hintergrund-Erkennung, neue Geräte selbst melden |
+| – | Margo/FLECS-Paketierung (ferrion#814, P3) | Anforderungen, Stand und Lücken in [`margo.md`](margo.md); kein Roadmap-Schritt, bis ein Zielgerät feststeht |
 
 Das ausführliche Discovery-Konzept liegt im `ferrion`-Repo unter
 `docs/roadmap/details/gateway-device-discovery.md`, der Grundsatz zur breiten
