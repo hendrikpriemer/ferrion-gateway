@@ -112,7 +112,7 @@ Sources: <https://docs.flecs.tech/foundation/margo/>,
 | 7 | Images for the declared architectures | `margo.yaml` declares `amd64` and `arm64`; `release.yml` builds without `platforms`, i.e. `amd64` only | Either build multi-arch (QEMU, check the `@serialport/bindings-cpp` musl `arm64` prebuild) or declare `amd64` only. Most edge devices are `arm64`, so multi-arch is the useful answer |
 | 8 | Version | `metadata.version: 0.1.0` is stale (package is 0.1.65); release tags are `v0.1.x` | Use BART's placeholder; tags already fit SemVer |
 | 9 | Signing | Release images are signed keyless with Sigstore ([releases.md](releases.md)) | BART signs with its own cosign key as a second step; when FLECS replicates the image into an on-premises registry, the Sigstore signature does not travel unless copied. Decide whether both signatures are kept |
-| 10 | Operator access to the UI | The control plane has no authentication and is published on `127.0.0.1` of the host only; inside the container it binds `0.0.0.0` | Classic FLECS apps expose UIs through `editors`; for Margo apps the FLECS docs say nothing yet. On a headless edge device the operator could not reach the UI, and publishing it on the device network would expose an unauthenticated API that holds the ferrion API key. **Authentication (or an authenticating reverse proxy on the device) must come before any Margo deployment** – the largest functional gap, related to ferrion#1030 |
+| 10 | Operator access to the UI | The control plane has no authentication and is published on `127.0.0.1` of the host only; inside the container it binds `0.0.0.0` | FLECS routes app UIs (`editors`) through its reverse proxy but does **not** put its own login in front of them (section 5). On a headless edge device the operator could not reach the UI, and publishing it on the device network would expose an unauthenticated API that holds the ferrion API key. **The control plane needs its own login, built on the device's identity provider (OIDC), before any Margo deployment** – the largest functional gap; see section 5 and ferrion#1051 |
 | 11 | Health and start-up | `HEALTHCHECK` on `/api/health`, `init: true`, `stop_grace_period`, log-size limits | Compliant; none of these settings is on BART's forbidden list |
 | 12 | Resource needs | 0.5 cores, 512 Mi memory, measured | Keep the numbers, move them into the schema the target expects (`requiredResources` for BART) |
 | 13 | End-to-end test on a device | Nothing has been tested against a FLECS device or BART | `bart validate` is offline and can run now; `bart push`/Device Client need a FLECS publishing package |
@@ -125,8 +125,9 @@ Sources: <https://docs.flecs.tech/foundation/margo/>,
 3. Build release images for `linux/amd64` and `linux/arm64`; verify the
    serial-port native module on `arm64`.
 4. Add icon and release notes to the package.
-5. Decide on control-plane authentication for devices that are not a
-   developer's machine (ferrion#1030 covers the ferrion-facing side).
+5. Give the control plane an OIDC login that uses the device's identity
+   provider (section 5, ferrion#1051); ferrion#1030 covers the ferrion-facing
+   side.
 6. Request a FLECS publishing package and run `bart push` to staging; test with
    the Device Client once it is generally available.
 
@@ -137,3 +138,80 @@ to ferrion, field devices only read, data in one named volume, CycloneDX SBOM,
 Apache-2.0 with a generated NOTICE, signed release images with digest pinning.
 These are the properties a Margo device or a FLECS review will look at first,
 and they do not depend on the manifest format.
+
+## 5. Users and roles on a FLECS device
+
+Read from the FLECS Core sources and release notes (GitHub mirror
+`FLECS-Technologies/flecs-public`, archived 2026-07; current development at
+<https://git.flecs.tech/flecs/flecs-core>), the FLECS web app
+(`FLECS-Technologies/flecs-webapp`, `src/features/auth/`) and the Core README,
+2026-10-30. There is **no developer guide** for this on docs.flecs.tech yet, and
+the provider endpoints are tagged *Experimental*; confirm with FLECS before
+building against them.
+
+**How FLECS itself authenticates and authorises**
+
+- Since Core `5.0.0-red-deer` (2025-11) the Core API is locked without a
+  login. Core is configured with exactly one **auth provider**: either
+  **fence**, FLECS's own OAuth 2.0 server (`FLECS_CORE_AUTH_KIND=oauth`, with
+  `FLECS_CORE_ISSUER_URL`, `FLECS_CORE_JWK_URL`, `FLECS_CORE_AUTHORIZE_URL`,
+  `FLECS_CORE_TOKEN_URL`; since 2026-10-22 run as a system container), or
+  **any standard OpenID Connect provider** (`FLECS_CORE_AUTH_KIND=oidc`,
+  only `FLECS_CORE_ISSUER_URL`). The product pages list LDAP, Active
+  Directory and OpenID Connect as supported identity providers; the setup
+  guide currently allows exactly one local super-admin in fence.
+- The web app logs in with OAuth 2.0 **authorization code + PKCE**
+  (`oauth4webapi`, `client_id: flecs`, scope `api:read` for fence or
+  `openid email` for OIDC) and sends the JWT access token as a Bearer token.
+  It reads standard OIDC claims plus Keycloak-style role claims
+  (`realm_access.roles`, `resource_access.<client>.roles`) from the token.
+- Authorisation is **Casbin**: a policy maps permissions such as
+  `tech.flecs.core.read_instances` to `GET /v2/instances`, groups (`g`) build
+  roles from permissions, and the request subject comes from the token. Policy
+  and model are files (`casbin_policy.csv`, `casbin_model.conf`) that an
+  operator can replace.
+
+**What that means for an app's own UI**
+
+- App UIs (`editors`) are reached through `GET /v2/instances/{id}/editor/{port}`,
+  which is **public in the Casbin policy** (`p,*,…/editor/:port,GET`) and
+  answers with a redirect to the app's port or its reverse-proxy location.
+  FLECS does not add authentication in front of the app. An app that needs
+  users and roles authenticates them itself.
+- The configured provider is discoverable: `GET /v2/providers/auth/default`
+  (also public) returns the default auth provider with `kind`, `issuer_url`
+  and, for fence, `jwk_url`, `authorize_url` and `token_url`, rewritten to the
+  host the caller used. Core passes its own address to app containers as the
+  gateway of the default network (release note FLX-1116), and the provider's
+  URLs are reachable from inside a container (release note "use container ip
+  and port to access core auth provider"). The earlier idea that an *app*
+  provides the identity provider through its manifest was removed from Core
+  on 2026-10-22; the provider is a Core-level setting.
+
+**What the gateway should do (ferrion#1051)**
+
+1. Add an optional **OIDC login** to the control plane, generic rather than
+   FLECS-specific: issuer URL, client id and scope from the environment
+   (`FG_OIDC_ISSUER_URL`, `FG_OIDC_CLIENT_ID`, …), with a FLECS mode that
+   fills them from `/v2/providers/auth/default` of the Core host. Standard
+   OIDC discovery covers Keycloak, Entra ID, Authentik and fence; nothing in
+   the gateway needs to know Casbin.
+2. Web UI: authorization code + PKCE in the browser, as the FLECS web app does;
+   the control plane verifies the access token against the provider's JWKS
+   (`jose`) on every request and keeps no password store of its own.
+3. **Roles in the gateway**, mapped from token claims (`realm_access.roles`,
+   `resource_access`, or a configurable claim): *viewer* (status, instances,
+   logs), *operator* (start/stop instances, run a device search),
+   *administrator* (ferrion connection and API key, discovery limit,
+   simulated instances). Unknown or missing roles see nothing but the login.
+4. Without a configured issuer the gateway keeps today's behaviour (loopback
+   only, no login), so a developer's machine does not change. With an issuer
+   configured, the control plane may be published on the device network,
+   because the same-origin and `Host` guards stay in place and every
+   state-changing request now also carries a verified identity.
+5. Audit: log user (`sub`, `preferred_username`) and role on every
+   state-changing request, so a FLECS operator's audit trail continues into
+   the gateway.
+
+This closes gap 10 of the table above and is a precondition for any Margo
+deployment of the gateway, independent of the packaging work.
