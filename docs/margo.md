@@ -3,15 +3,16 @@
 Status as of 2026-10-30. Tracked in
 [ferrion#814](https://github.com/hendrikpriemer/ferrion/issues/814).
 
-**Short answer: not yet.** The gateway was built to fit a Margo device
-(one image, Compose-deployable, named volume only, non-root, health check,
-Apache-2.0 with NOTICE, signed release images), but it cannot be packaged for
-the current Margo specification or for FLECS today. `margo.yaml` follows an
-older draft, the Compose file still says `build:`, one environment variable has
-no parameter, release images exist for `amd64` only, icon and release notes are
-missing, and the control-plane UI is reachable from the local machine only.
-The sections below say exactly what each target demands, where the gateway
-stands, and in which order the gaps should be closed.
+**Short answer: packageable for FLECS since 2026-10-30, not yet deployable.**
+The gateway was built to fit a Margo device (one image, Compose-deployable,
+named volume only, non-root, health check, Apache-2.0 with NOTICE, signed
+release images). Since 2026-10-30 the repository carries a BART package
+(`app/`, `compose/`, section 7): `bart validate` passes every check and
+`bart package` produces the catalog and components artifacts. What remains:
+release images exist for `amd64` only, the control-plane UI has no login and
+stays on the device's loopback, and nothing has run on a FLECS device or
+through `bart push`. The sections below say exactly what each target demands,
+where the gateway stands, and in which order the gaps should be closed.
 
 Both targets are moving: the Margo specification is a pre-draft (Preview
 Release 3, tags `v1.0.0-rc.3`), FLECS's packaging tool BART is in public beta,
@@ -103,28 +104,31 @@ Sources: <https://docs.flecs.tech/foundation/margo/>,
 
 | # | Requirement | Gateway today | Gap |
 | --- | --- | --- | --- |
-| 1 | Application description in the current schema | `margo.yaml` uses `apiVersion: margo.org/v1-alpha1` with a `kind`, `metadata.id`, `packageLocation` and `requiredResources` with `storage`/`interfaces` – an older draft that neither Margo PR3 nor BART accepts | Rewrite against BART's `margo/v1alpha1` (top-level `id`, `metadata.version: "0.0.0"`, `requiredResources.cpu.architectures`), drop unknown fields, run `bart validate` |
-| 2 | No `build:` in Compose | `docker-compose.yml` builds from the working tree | Reference the signed release image (`image: ghcr.io/hendrikpriemer/ferrion-gateway:<version>`, see [releases.md](releases.md)); keep building only in a development override |
-| 3 | Package layout and file name | one `docker-compose.yml` at the repository root | Add `app/` and `compose/compose.yaml` for packaging (the root file stays for development), or generate them in CI |
-| 4 | Every `${VAR}` has a parameter | `FG_CONTROL_PLANE_PORT` has `controlPlanePort`; `FG_DISCOVERY_ALLOWED_CIDRS` has none | Add a string parameter with a CIDR-list `regexMatch` and `allowEmpty: true`; `FG_BIND_HOST` is a fixed value, not a variable, and stays |
+| 1 | Application description in the current schema | `app/margo.yaml` in BART's `margo/v1alpha1` shape: top-level `id`, `kind`, component `repository`/`revision` as placeholders, `requiredResources` with `memory`, `storage` and `interfaces` (all valid in BART's schema); V01 passes | **Done 2026-10-30.** Margo PR3 itself (`apiVersion: v1`, `deviceConstraints`) differs; follow BART, which is what FLECS devices consume |
+| 2 | No `build:` in Compose | `compose/compose.yaml` references `ghcr.io/hendrikpriemer/ferrion-gateway:v0.1.65`; the root `docker-compose.yml` keeps `build:` for development | **Done.** The referenced tag must exist in ghcr.io when `bart push` mirrors it, i.e. after the first regular release ([releases.md](releases.md)) |
+| 3 | Package layout and file name | `app/` (margo.yaml, icon.svg, release-notes.md, description.md, license.txt) and `compose/compose.yaml`; `bart package` writes the catalog, a components tarball with `compose/compose.yaml` as its single top-level directory, and the image manifest | **Done** |
+| 4 | Every `${VAR}` has a parameter | `controlPlanePort`, `discoveryAllowedCidrs` and `logLevel` target `FG_CONTROL_PLANE_PORT`, `FG_DISCOVERY_ALLOWED_CIDRS` and `FG_LOG_LEVEL`, with an operator form under `configuration`. Pointers are the bare variable names: BART compares them verbatim, an `ENV.` prefix fails V15 and V16 | **Done.** `FG_BIND_HOST` is a fixed value, not a variable |
 | 5 | No bind mounts, `container_name`, `privileged`, `pid: host`, host network | Compliant: one named volume, nothing else; `network_mode: host` is only a commented alternative | Keep. Consequence: on a Margo device the gateway always runs on a bridge network, so device discovery works only within what that network reaches ([device-discovery.md](device-discovery.md)) |
-| 6 | Icon, release notes, licence, description | `LICENSE` (Apache-2.0) and `README.md` are referenced; `docs/assets/ferrion-icon.svg` exists but is not referenced; no release-notes file | Point `icon` at an SVG/PNG under `app/`, write `app/release-notes.md` per release (the GitHub release already carries generated notes) |
-| 7 | Images for the declared architectures | `margo.yaml` declares `amd64` and `arm64`; `release.yml` builds without `platforms`, i.e. `amd64` only | Either build multi-arch (QEMU, check the `@serialport/bindings-cpp` musl `arm64` prebuild) or declare `amd64` only. Most edge devices are `arm64`, so multi-arch is the useful answer |
-| 8 | Version | `metadata.version: 0.1.0` is stale (package is 0.1.65); release tags are `v0.1.x` | Use BART's placeholder; tags already fit SemVer |
+| 6 | Icon, release notes, licence, description | All four under `app/` and declared in the catalog. `license.txt` is a copy of `LICENSE`, because BART requires a file extension and a path inside `app/`; `description.md` is a short marketplace text, not the README | **Done.** `app/release-notes.md` is written by hand per release; the GitHub release keeps the generated full list |
+| 7 | Images for the declared architectures | `app/margo.yaml` declares `amd64` only, matching `release.yml`, which builds without `platforms` | Add a multi-arch build (QEMU; check the `@serialport/bindings-cpp` musl `arm64` prebuild), then list `arm64` too. BART builds and mirrors one image per listed architecture, and most edge devices are `arm64` |
+| 8 | Version | `metadata.version` and the component `revision` are `0.0.0` placeholders; BART injects the version from the git tag on `HEAD` or `--version` (a `v` prefix is accepted and stored without it) | **Done** |
 | 9 | Signing | Release images are signed keyless with Sigstore ([releases.md](releases.md)) | BART signs with its own cosign key as a second step; when FLECS replicates the image into an on-premises registry, the Sigstore signature does not travel unless copied. Decide whether both signatures are kept |
 | 10 | Operator access to the UI | The control plane has no authentication and is published on `127.0.0.1` of the host only; inside the container it binds `0.0.0.0` | FLECS routes app UIs (`editors`) through its reverse proxy but does **not** put its own login in front of them (section 5). On a headless edge device the operator could not reach the UI, and publishing it on the device network would expose an unauthenticated API that holds the ferrion API key. **The control plane needs its own login, built on the device's identity provider (OIDC), before any Margo deployment** – the largest functional gap; see section 5 and ferrion#1051 |
 | 11 | Health and start-up | `HEALTHCHECK` on `/api/health`, `init: true`, `stop_grace_period`, log-size limits | Compliant; none of these settings is on BART's forbidden list |
-| 12 | Resource needs | 0.5 cores, 512 Mi memory, measured | Keep the numbers, move them into the schema the target expects (`requiredResources` for BART) |
-| 13 | End-to-end test on a device | Nothing has been tested against a FLECS device or BART | `bart validate` is offline and can run now; `bart push`/Device Client need a FLECS publishing package |
+| 12 | Resource needs | 0.5 cores, 512 Mi memory, 512 Mi storage, `interfaces: ethernet` under `requiredResources` | **Done** |
+| 13 | End-to-end test on a device | `bart validate` and `bart package` run clean in a container (section 7); nothing has run on a FLECS device or through `bart push` | `bart push` and the Device Client need a FLECS publishing package |
 
 ## 3. Suggested order
 
 1. Restructure for BART (`app/`, `compose/`), rewrite `margo.yaml`, add the
-   missing parameter, run `bart validate` until clean. No runtime change.
-2. Switch the packaged Compose file to the signed release image.
+   missing parameters, run `bart validate` until clean: **done 2026-10-30**
+   (section 7), no runtime change.
+2. Switch the packaged Compose file to the signed release image: **done**
+   (`compose/compose.yaml`); the tag it names must exist before `bart push`.
 3. Build release images for `linux/amd64` and `linux/arm64`; verify the
    serial-port native module on `arm64`.
-4. Add icon and release notes to the package.
+4. Add icon and release notes to the package: **done**; keep
+   `app/release-notes.md` current with each release.
 5. Give the control plane an OIDC login that uses the device's identity
    provider (section 5, ferrion#1051); ferrion#1030 covers the ferrion-facing
    side.
@@ -284,3 +288,42 @@ Tracked in ferrion#1052.
 
 None of this depends on the packaging work in sections 2 and 3; step 1 works
 with any container on the `flecs` network.
+
+## 7. The BART package in this repository
+
+| Path | Role |
+| --- | --- |
+| `app/margo.yaml` | Margo ApplicationDescription in BART's `margo/v1alpha1` shape; placeholders for version and component repository are overwritten by BART |
+| `app/icon.svg`, `app/release-notes.md`, `app/description.md`, `app/license.txt` | Catalog files the marketplace shows; the licence is a copy of `LICENSE` (BART needs an extension and a path inside `app/`) |
+| `compose/compose.yaml` | The deployable compose: signed release image, loopback-only control plane, three `${VAR}` parameters, named volume. No simulator port ranges |
+| `docker-compose.yml` (root) | Development only; builds from the working tree and publishes the simulator ports |
+
+`app/` and `compose/` are excluded from the Docker build context
+(`.dockerignore`); the image does not change.
+
+**Validating without installing anything.** BART publishes Linux binaries on
+its Forgejo releases page; macOS builds from source. Running the release
+binary in a throwaway container keeps it off the host:
+
+```sh
+curl -fsSL -o /tmp/bart https://git.flecs.tech/flecs/bart/releases/download/0.4.0/bart-linux-arm64-release
+chmod +x /tmp/bart   # amd64 hosts: bart-linux-amd64-release
+docker run --rm --network none --read-only --cap-drop ALL \
+  -v /tmp/bart:/usr/local/bin/bart:ro -v "$PWD":/work:ro \
+  debian:trixie-slim bart validate --dir /work
+```
+
+`bart package --dir /work --version <semver> --out /work/dist` on a writable
+copy writes `dist/catalog/`, `dist/components/ferrion-gateway-components.tar.gz`
+and `dist/images/manifest.yaml` (source image → `apps.flecs.tech/staging-ferrion-gateway/ferrion-gateway:<version>`).
+
+**Result 2026-10-30, BART 0.4.0** (sha256 `86a8bf98…aa63`): `bart validate`
+passes every check ("Validation passed"); `bart package --version 0.1.65`
+produces the three artifacts, the components tarball holds exactly
+`compose/compose.yaml` with the image rewritten to the staging path. Counter
+check on a copy with `build:`, `licenseFile: ../LICENSE` and an `ENV.`-prefixed
+pointer: four errors, as expected (V03, V12, V15, V16).
+
+Not done with this: `bart push` (needs a FLECS publishing package and the
+release tag in ghcr.io), multi-arch images (gap 7), the control-plane login
+(section 5), and any test on a device.

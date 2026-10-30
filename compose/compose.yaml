@@ -1,0 +1,51 @@
+# The compose file BART packages for a Margo device (compose/ is bundled as
+# the components artifact; app/margo.yaml describes it). It runs the signed
+# release image (docs/releases.md) and never builds: a package may not
+# contain `build:`, bind mounts, `container_name`, `network_mode: host`,
+# `privileged` or `pid: host`. The root docker-compose.yml is the development
+# compose and keeps building from the working tree.
+#
+# Every ${VAR} here has a Parameter in app/margo.yaml (BART checks both
+# directions); the device fills them from the operator's configuration.
+services:
+  ferrion-gateway:
+    # BART rewrites this to the staging registry at package time and to the
+    # production registry at release; the source tag must exist in ghcr.io.
+    image: ghcr.io/hendrikpriemer/ferrion-gateway:v0.1.65
+    # tini as PID 1: the control plane forks one Node process per instance,
+    # each with an esbuild service process that must be reaped if an
+    # instance is OOM-killed (see the root docker-compose.yml).
+    init: true
+    # The control plane stops its instances with escalation (disconnect,
+    # SIGTERM after 5 s, SIGKILL after 8 s, hard cap 10 s) before it exits.
+    stop_grace_period: 20s
+    ports:
+      # Loopback of the device only. The control plane has no authentication
+      # (docs/margo.md, section 5): it must not be published on the device
+      # network until it has an OIDC login. Simulator port ranges are not
+      # published here; simulated instances stay reachable inside the
+      # compose network only.
+      - "127.0.0.1:${FG_CONTROL_PLANE_PORT:-4000}:${FG_CONTROL_PLANE_PORT:-4000}"
+    environment:
+      FG_CONTROL_PLANE_PORT: ${FG_CONTROL_PLANE_PORT:-4000}
+      # 0.0.0.0 inside the container, so the published port reaches it; safe
+      # only because the host side above is loopback-only.
+      FG_BIND_HOST: 0.0.0.0
+      # Device search limit (R07, docs/device-discovery.md); empty = no search.
+      FG_DISCOVERY_ALLOWED_CIDRS: ${FG_DISCOVERY_ALLOWED_CIDRS:-}
+      FG_LOG_LEVEL: ${FG_LOG_LEVEL:-info}
+    volumes:
+      # instances.json, settings.json (ferrion connection, API key) and the
+      # reading buffers survive container recreation.
+      - ferrion-gateway-data:/app/data
+    restart: unless-stopped
+    # A persistent connection error logging on every retry once grew a
+    # container log to 36 GB on the production host; capped up front.
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  ferrion-gateway-data:

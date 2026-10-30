@@ -1,0 +1,7 @@
+<svg viewBox="0 0 200 200" width="200" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ferrion">
+  <rect x="0" y="0" width="200" height="200" rx="44" fill="#185FA5"/>
+  <path d="M143.5,120.3 A48,48 0 1 1 143.5,79.7" fill="none" stroke="#FFFFFF" stroke-width="16" stroke-linecap="round"/>
+  <polygon points="88,78 96.66,83 96.66,93 88,98 79.34,93 79.34,83" fill="#FFFFFF"/>
+  <polygon points="112,78 120.66,83 120.66,93 112,98 103.34,93 103.34,83" fill="#FFFFFF"/>
+  <polygon points="100,100 108.66,105 108.66,115 100,120 91.34,115 91.34,105" fill="#FFFFFF"/>
+</svg>

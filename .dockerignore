@@ -17,3 +17,6 @@ scripts/git-hooks
 docs
 vitest.config.ts
 eslint.config.mjs
+# Margo/FLECS packaging inputs (app/, compose/) are not part of the image
+app
+compose
