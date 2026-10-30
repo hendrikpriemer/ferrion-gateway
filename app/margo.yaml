@@ -1,0 +1,115 @@
+# Margo ApplicationDescription for ferrion-gateway, in the shape FLECS's
+# packaging tool BART validates (`bart validate`, API version margo/v1alpha1,
+# schema vendored in git.flecs.tech/flecs/bart). The package layout is
+# BART's: this file plus icon, release notes, description and licence under
+# app/, and the deployable compose under compose/. The root
+# docker-compose.yml stays the development compose (it builds from the
+# working tree, which a package may not do).
+#
+# `metadata.version` and the component's `repository`/`revision` are
+# placeholders: BART overwrites them at package time with the version from
+# the git tag and the registry it pushes to. Requirements, status and the
+# remaining gaps: docs/margo.md.
+apiVersion: margo/v1alpha1
+kind: ApplicationDescription
+id: ferrion-gateway
+metadata:
+  name: ferrion Gateway
+  version: "0.0.0"
+  description: >-
+    Edge gateway of the ferrion industrial asset platform. Reads field devices
+    over OPC UA, Modbus TCP and MQTT, searches the plant network for OPC UA
+    devices on request and reports to a ferrion installation over an
+    outbound-only HTTPS connection. Includes simulated devices for testing
+    without hardware.
+  catalog:
+    organization:
+      - name: ferrion
+        site: https://github.com/hendrikpriemer/ferrion-gateway
+    application:
+      tagline: Reads OPC UA, Modbus TCP and MQTT devices and reports to ferrion, outbound only.
+      icon: icon.svg
+      releaseNotes: release-notes.md
+      descriptionFile: description.md
+      licenseFile: license.txt
+      site: https://github.com/hendrikpriemer/ferrion-gateway
+      tags: ["gateway", "opc-ua", "modbus", "mqtt", "iiot", "ferrion"]
+deploymentProfiles:
+  - type: compose
+    id: ferrion-gateway-compose
+    description: >-
+      One container: the control plane (web UI and local API) plus one child
+      process per instance. The bridge instance reads every device ferrion
+      assigned to this gateway.
+    components:
+      - name: ferrion-gateway
+        properties:
+          repository: oci://apps.flecs.tech/ferrion-gateway/components
+          revision: "0.0.0"
+    requiredResources:
+      cpu:
+        cores: 0.5
+        # amd64 only for now: release.yml builds the image for the runner's
+        # architecture. Add arm64 here together with a multi-arch build
+        # (docs/margo.md, gap 7); BART builds and mirrors one image per
+        # architecture listed.
+        architectures: [amd64]
+      # Measured (docs/resource-usage.md): ~55 MiB control plane plus
+      # ~85 MiB per Modbus/MQTT instance or ~144 MiB per OPC UA instance.
+      # Covers the control plane and a handful of instances; size the
+      # device for the instances you intend to run.
+      memory: 512Mi
+      storage: 512Mi
+      interfaces:
+        - type: ethernet
+parameters:
+  controlPlanePort:
+    value: 4000
+    targets:
+      - pointer: FG_CONTROL_PLANE_PORT
+        components: ["ferrion-gateway"]
+  discoveryAllowedCidrs:
+    value: ""
+    targets:
+      - pointer: FG_DISCOVERY_ALLOWED_CIDRS
+        components: ["ferrion-gateway"]
+  logLevel:
+    value: info
+    targets:
+      - pointer: FG_LOG_LEVEL
+        components: ["ferrion-gateway"]
+configuration:
+  sections:
+    - name: Network
+      settings:
+        - parameter: controlPlanePort
+          name: Control-plane port
+          description: Port of the local web UI and API (published on the device's loopback interface only).
+          schema: port
+        - parameter: discoveryAllowedCidrs
+          name: Device search limit
+          description: >-
+            IPv4 networks or addresses the gateway may search for OPC UA
+            devices, comma-separated (e.g. 10.20.30.0/24). Empty means no
+            device search. ferrion can narrow this limit, never widen it.
+          schema: cidrList
+    - name: Logging
+      settings:
+        - parameter: logLevel
+          name: Log level
+          schema: logLevel
+  schema:
+    - name: port
+      dataType: integer
+      minValue: 1024
+      maxValue: 65535
+      allowEmpty: false
+    - name: cidrList
+      dataType: string
+      allowEmpty: true
+      maxLength: 1024
+      regexMatch: "^\\s*$|^\\s*(\\d{1,3}(\\.\\d{1,3}){3}(/\\d{1,2})?)(\\s*[, ]\\s*\\d{1,3}(\\.\\d{1,3}){3}(/\\d{1,2})?)*\\s*$"
+    - name: logLevel
+      dataType: string
+      options: ["fatal", "error", "warn", "info", "debug", "trace"]
+      allowEmpty: false

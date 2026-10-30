@@ -30,9 +30,9 @@ a separate, commercial product.
 - **Simulates devices** (AVENTICS AF2 and DS1, Janitza UMG 801, Keyence FD-G)
   with real protocol servers, for development and demos without hardware.
 - **Runs as one container** with a local web UI to set up the ferrion
-  connection and manage simulated instances. A [Margo](https://margo.org)
-  application description is included; what is still missing for a Margo or
-  FLECS deployment is listed in [docs/margo.md](docs/margo.md).
+  connection and manage simulated instances. A [Margo](https://margo.org)/FLECS
+  package (`app/`, `compose/`) validates with FLECS's BART; what is still
+  missing for a deployment on a device is listed in [docs/margo.md](docs/margo.md).
 
 ## Architecture at a glance
 

@@ -137,11 +137,12 @@ protocol also gets a small published port range (10 slots), since every
 new instance of the same protocol takes the next port up - see the
 compose file if you need more than that.
 
-`margo.yaml` at the repo root is a [Margo](https://margo.org) Application
-Description written against an earlier draft of the specification. It is
-not yet accepted by the current Margo release or by FLECS's packaging tool
-BART, and the compose file still uses `build:`; [margo.md](margo.md) lists
-the requirements, the gaps and the order to close them (ferrion#814).
+`app/` and `compose/` form the [Margo](https://margo.org)/FLECS package:
+`app/margo.yaml` is the Application Description in the shape FLECS's packaging
+tool BART validates, `compose/compose.yaml` the deployable compose (signed
+release image, no `build:`). Both validate and package cleanly with BART
+0.4.0; what is still missing for a deployment on a device, and how to run the
+validation in a container, is in [margo.md](margo.md) (ferrion#814).
 
 **If ferrion itself runs natively on the host (not in Docker)**, set the
 ferrion connection's base URL to `https://host.docker.internal:3000`, not

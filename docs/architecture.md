@@ -206,4 +206,5 @@ is fixed. How to report a vulnerability: [SECURITY.md](../SECURITY.md).
 | `fleet/` | Child process entry point, headless launcher, port allocation |
 | `public/` | The web UI: plain HTML, CSS and JavaScript, no build step |
 | `scripts/` | Data check before an update, NOTICE generation, release helpers |
-| `Dockerfile`, `docker-compose.yml`, `margo.yaml` | Container image, compose file, Margo application description (status and gaps in [margo.md](margo.md)) |
+| `Dockerfile`, `docker-compose.yml` | Container image and the development compose (builds from the working tree, publishes simulator ports) |
+| `app/`, `compose/` | Margo/FLECS package for BART: application description, icon, release notes, description, licence, and the deployable compose ([margo.md](margo.md)) |
