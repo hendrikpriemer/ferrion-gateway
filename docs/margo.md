@@ -215,3 +215,72 @@ building against them.
 
 This closes gap 10 of the table above and is a precondition for any Margo
 deployment of the gateway, independent of the packaging work.
+
+## 6. Data exchange over the FLECS Service Mesh
+
+Read from <https://docs.flecs.tech/flecs-core/exchanging-data-between-apps/>,
+the flunder integration guide, the Node-RED example, the repositories
+`FLECS-Technologies/flunder`, `apps-tech.flecs.flunder` and
+`apps-tech.flecs.mqtt-bridge`, and the Zenoh REST documentation, 2026-10-30.
+Tracked in ferrion#1052.
+
+**What the mesh is**
+
+- The Service Mesh is a **Zenoh** router: the app `tech.flecs.service-mesh`
+  (image `tech.flecs.flunder`) runs `zenohd` with the REST plugin on port
+  `8000` and the storage manager, under the hostname `flecs-flunder` on TCP
+  `7447`. It is not installed by default; operators add it, the MQTT bridge
+  and a Mosquitto broker from the marketplace. All apps share the Docker
+  network `flecs`, so these hostnames resolve inside every app container.
+- **flunder** is FLECS's C/C++ client library (over `zenoh-c` 1.5): typed
+  `publish(topic, value)` for booleans, integers, floats, doubles, strings and
+  raw bytes with an encoding string; `subscribe(topic, callback)` with Zenoh
+  wildcards (`*`, `**`); `add_mem_storage(name, keyexpr)` for retention in
+  memory. Latency is quoted at 35–45 µs; FLECS claims no hard real time.
+- The **MQTT bridge** connects to `flecs-mqtt:1883`, subscribes to `#` and
+  forwards every MQTT message as a mesh key with the same name (payload as
+  bytes, encoding `application/octet-stream;bridge=mqtt`), and every mesh
+  sample back to MQTT. Mesh and MQTT are therefore one topic tree; a loop
+  guard on the encoding keeps bridged messages from bouncing.
+- There is **no prescribed data model** (topic names are free; the docs
+  suggest names such as `sensor/temperature`) and **no access control inside
+  the mesh**. Field devices and PLCs reach the mesh through adapter apps
+  (any2x, Node-RED with OPC UA nodes, AnyViz); the Device Client itself only
+  onboards devices.
+
+**What a Node.js app can use**
+
+- `@eclipse-zenoh/zenoh-ts` needs the `zenoh-plugin-remote-api` on the router,
+  which the FLECS mesh does not load, and it runs in browsers only. A direct
+  Zenoh session from Node is therefore not available today.
+- **MQTT via the bridge:** `mqtt://flecs-mqtt:1883`, plain MQTT 3.1.1/5, no
+  TLS, no authentication. The gateway's MQTT data source already speaks this
+  (broker URL, topic, `jsonField`), so a mesh value that arrives as JSON on an
+  MQTT topic can be read with no code change, provided the gateway container
+  is on the `flecs` network.
+- **Zenoh REST plugin:** `GET http://flecs-flunder:8000/<key or wildcard>`
+  returns a JSON array of `{key, value, encoding, time}`; the same request
+  with `Accept: text/event-stream` subscribes over Server-Sent Events;
+  `PUT` with a `Content-Type` (`text/plain`, `application/json`,
+  `application/integer`, `application/float`) publishes. No library needed.
+  How flunder's binary-typed values (an `int32` published from C++) are
+  rendered in the REST reply must be checked live before relying on it.
+
+**What the gateway could do (ferrion#1052)**
+
+1. *No code:* on a FLECS device with mesh, bridge and broker, point an MQTT
+   data source at `flecs-mqtt:1883` and the mesh topic; confirm the gateway
+   container joins the `flecs` network (automatic for classic FLECS apps,
+   open for Margo workloads).
+2. *Mesh key as a data source* through the REST plugin (current value by
+   `GET`, updates by SSE), as a fourth read path beside OPC UA, Modbus TCP and
+   MQTT, with the typed-value question from above answered first.
+3. *Publish readings to the mesh, opt-in:* `ferrion/<gateway>/<asset>/<metric>`
+   as JSON `{value, unit, timestamp}` by REST `PUT` or MQTT, so dashboards
+   and PLC adapters on the device see the values ferrion receives anyway. The
+   mesh is device-local, so the gateway's outbound-only rule towards ferrion
+   is untouched; the key namespace and units should be agreed with FLECS,
+   because the mesh prescribes none.
+
+None of this depends on the packaging work in sections 2 and 3; step 1 works
+with any container on the `flecs` network.
