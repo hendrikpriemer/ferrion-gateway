@@ -60,23 +60,37 @@ Sigstore und legt es mit SBOM in die GitHub Container Registry. Releases
 kommen gesammelt, etwa einmal im Monat.
 
 **Einmalig:** `cosign` installieren
-(<https://github.com/sigstore/cosign/releases>), bei `ghcr.io` mit einem Token
-anmelden, das nur Pakete lesen darf (`read:packages`), und in der Compose-Datei
-der VM beim Dienst `ferrion-gateway` statt `build: .` die Zeile
+(<https://github.com/sigstore/cosign/releases>,
+`sudo install -D -m 755 cosign-linux-amd64 /usr/local/bin/cosign`), bei
+`ghcr.io` mit einem Token anmelden, das nur Pakete lesen darf
+(`read:packages`; das Gateway-Abbild ist öffentlich, der Login ist für das
+ferrion-Abbild nötig), das Repo einmal klonen
+(`git clone https://github.com/hendrikpriemer/ferrion-gateway.git ~/gateway-src`,
+nur als Quelle für Skripte und Doku) und in der Compose-Datei jeder Instanz
+beim Dienst `ferrion-gateway` statt `build: .` die Zeile
 `image: ${GATEWAY_IMAGE:?GATEWAY_IMAGE not set - run scripts/vm-release-pull.sh <tag> first}`
-eintragen.
+eintragen – **erst nach dem ersten Pinnen**, denn ohne gesetzte Variable
+verweigert Compose auch `logs` und `exec`.
 
 ```sh
-git pull
-scripts/vm-release-pull.sh v<Version>
+git -C ~/gateway-src pull
+cd <Ordner der Instanz>            # dort liegt die .env der Instanz
+~/gateway-src/scripts/vm-release-pull.sh v<Version> --check
+~/gateway-src/scripts/vm-release-pull.sh v<Version>
 ```
 
 Das zieht das Abbild, löst den Tag in den Digest auf, prüft Signatur und
 SBOM-Attestation gegen die Identität des Release-Workflows und trägt erst
 dann `GATEWAY_IMAGE=ghcr.io/hendrikpriemer/ferrion-gateway@sha256:…` in `.env`
-ein (mit Sicherung `.env.bak-…`). Meldet es **SIGNATURE INVALID**, bleibt `.env`
-unverändert: nicht umschalten, sondern melden. Der laufende Container bleibt
-davon unberührt und liefert weiter Daten.
+ein (mit Sicherung `.env.bak-…`; eine fehlende `.env` legt es mit Modus 600
+an). Meldet es **SIGNATURE INVALID**, bleibt `.env` unverändert: nicht
+umschalten, sondern melden. Der laufende Container bleibt davon unberührt
+und liefert weiter Daten.
+
+**Nie neben einem Datenbank-Dump ziehen.** Beim ersten Release (ferrion#1067)
+liefen Dump und Ziehen gleichzeitig; die Platte war ausgelastet und Messwerte
+gingen verloren. Das Skript bricht ab, solange auf der Maschine ein `pg_dump`
+läuft (Exit 3); `--force` übergeht das nur mit Absicht.
 
 Ohne Registry, als Rückweg: `build: .` statt `image:` und `docker compose
 build`; das kostet auf der VM Platz und Zeit.
