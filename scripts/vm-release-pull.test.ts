@@ -1,5 +1,5 @@
 import { execFileSync, spawnSync } from "node:child_process";
-import { chmodSync, existsSync, mkdtempSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { chmodSync, existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
@@ -17,11 +17,13 @@ function stub(dir: string, name: string, body: string) {
   chmodSync(file, 0o755);
 }
 
-function setup({ verify = 0, attest = 0, digests = REFERENCE, cosign = true } = {}) {
+function setup({ verify = 0, attest = 0, digests = REFERENCE, cosign = true, dump = false } = {}) {
   const dir = mkdtempSync(path.join(os.tmpdir(), "vm-release-pull-"));
   const bin = path.join(dir, "bin");
   execFileSync("mkdir", ["-p", bin]);
   stub(bin, "docker", `if [ "$1" = inspect ]; then printf '%s\\n' "${digests}"; fi; exit 0`);
+  // pgrep stands in for the host's process list: 0 = a pg_dump is running.
+  stub(bin, "pgrep", `exit ${dump ? 0 : 1}`);
   if (cosign) {
     stub(bin, "cosign", `case "$1" in verify) exit ${verify} ;; verify-attestation) exit ${attest} ;; esac`);
   }
@@ -96,6 +98,47 @@ describe("vm-release-pull.sh", () => {
     expect(result.stderr).toContain(message);
     expect(vm.env()).toBe(before);
     expect(vm.backups()).toEqual([]);
+  });
+
+  it("creates a missing .env with mode 600 and pins into it (ferrion#1067)", () => {
+    const vm = setup();
+    rmSync(path.join(vm.dir, ".env"));
+    const result = vm.run("v0.1.1120");
+
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain("created .env (mode 600)");
+    expect(vm.env()).toBe(`GATEWAY_IMAGE=${REFERENCE}\n`);
+    expect(statSync(path.join(vm.dir, ".env")).mode & 0o777).toBe(0o600);
+    expect(vm.backups()).toEqual([]);
+  });
+
+  it("waits for a running pg_dump instead of pulling beside it, unless --force (ferrion#1067)", () => {
+    const vm = setup({ dump: true });
+    const before = vm.env();
+    const refused = vm.run("v0.1.1120");
+
+    expect(refused.status).toBe(3);
+    expect(refused.stderr).toContain("pg_dump is running");
+    expect(vm.calls()).not.toContain("docker pull");
+    expect(vm.env()).toBe(before);
+
+    const checkRefused = vm.run("v0.1.1120", "--check");
+    expect(checkRefused.status).toBe(3);
+
+    const forced = vm.run("v0.1.1120", "--force");
+    expect(forced.status).toBe(0);
+    expect(vm.env()).toContain(`GATEWAY_IMAGE=${REFERENCE}`);
+  });
+
+  it("rejects an unknown option before touching anything", () => {
+    const vm = setup();
+    const before = vm.env();
+    const result = vm.run("v0.1.1120", "--bogus");
+
+    expect(result.status).toBe(2);
+    expect(result.stderr).toContain("unknown option");
+    expect(vm.calls()).not.toContain("docker pull");
+    expect(vm.env()).toBe(before);
   });
 
   it("refuses to run without cosign", () => {
